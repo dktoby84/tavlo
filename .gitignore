@@ -1,0 +1,13 @@
+# Verifikations-screenshots — ikke en del af sitet
+screenshots/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Node (kun hvis værktøj tilføjes lokalt — sitet selv har ingen build)
+node_modules/
+package-lock.json

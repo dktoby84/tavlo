@@ -1,0 +1,252 @@
+/* Tavlo — marketing-site. Vanilla CSS, ingen build. */
+
+:root {
+  --guld: #F2B941;   /* kun maerket + primaer CTA */
+  --orange: #F0A182;
+  --magenta: #CA64DC;
+  --lilla: #9046F3;
+  --viola: #6525F7;
+  --bg: #0B0A0D;
+  --bg-2: #131118;
+  --ink: #ECE8E1;
+  --ink-dim: #A39FA9;
+  --line: rgba(255, 255, 255, 0.12);
+  --mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  /* Headline-font vaelges i session 2 (UI UX Pro Max). Solid systemstak indtil da. */
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --wrap: 1080px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+html { overflow-x: clip; }
+
+body {
+  margin: 0;
+  overflow-x: clip;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; text-wrap: balance; }
+h1 { font-size: clamp(2.2rem, 1.4rem + 4vw, 4rem); margin: 0 0 0.5em; }
+h2 { font-size: clamp(1.6rem, 1.2rem + 2.2vw, 2.6rem); margin: 0 0 0.5em; }
+h3 { font-size: 1.15rem; margin: 0 0 0.35em; }
+p { margin: 0 0 1rem; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+a { color: var(--orange); }
+
+:focus-visible { outline: 2px solid var(--magenta); outline-offset: 3px; border-radius: 3px; }
+
+.skip {
+  position: absolute; left: 1rem; top: -3rem;
+  background: var(--ink); color: var(--bg); padding: 0.6rem 1rem;
+  border-radius: 8px; text-decoration: none; transition: top 0.15s;
+}
+.skip:focus { top: 1rem; z-index: 10; }
+
+.wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: clamp(1.25rem, 5vw, 2.5rem); }
+
+/* ---- Knapper ---- */
+.btn {
+  display: inline-block; padding: 0.8rem 1.4rem; border-radius: 999px;
+  font-weight: 600; text-decoration: none; border: 1px solid transparent;
+  transition: transform 0.12s ease, background 0.15s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: var(--guld); color: #17130A; }
+.btn-ghost { border-color: var(--line); color: var(--ink); }
+.btn-ghost:hover { border-color: var(--ink-dim); }
+
+/* ---- Wordmark + timer-ring ---- */
+.wordmark {
+  display: inline-flex; align-items: center; gap: 0.04em;
+  font-family: var(--mono); font-size: 1.5rem; font-weight: 500;
+  letter-spacing: -0.03em; color: var(--ink); text-decoration: none;
+}
+.wordmark.small { font-size: 1.15rem; }
+.wordmark .ring { width: 0.82em; height: 0.82em; margin-inline: 0.02em; transform: translateY(0.04em); }
+.ring-track { fill: none; stroke: var(--line); stroke-width: 9; }
+.ring-arc {
+  fill: none; stroke: var(--guld); stroke-width: 9; stroke-linecap: round;
+  stroke-dasharray: 251; stroke-dashoffset: 66; transform: rotate(-90deg); transform-origin: 50% 50%;
+}
+
+/* ---- Header ---- */
+.site {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: 0.8rem clamp(1.25rem, 5vw, 2.5rem);
+  background: rgba(11, 10, 13, 0.72); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.site .btn { padding: 0.55rem 1.1rem; font-size: 0.95rem; white-space: nowrap; }
+@media (max-width: 430px) {
+  .site { padding-inline: 1rem; }
+  .wordmark { font-size: 1.25rem; }
+  .site .btn { padding: 0.5rem 0.85rem; font-size: 0.85rem; }
+}
+
+/* ---- Hero ---- */
+.hero { padding: clamp(3rem, 8vw, 6rem) 0; }
+.hero-grid { display: grid; gap: clamp(2rem, 6vw, 4rem); align-items: center; }
+.hero-grid > *, .phone-grid > * { min-width: 0; }
+@media (min-width: 860px) { .hero-grid { grid-template-columns: 1.05fr 0.95fr; } }
+.eyebrow { color: var(--magenta); font-weight: 600; letter-spacing: 0.02em; margin-bottom: 0.75rem; }
+.lead { color: var(--ink-dim); font-size: 1.1em; max-width: 42ch; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.5rem; }
+
+/* ---- Board-mockup (storskaerm) ---- */
+.board {
+  position: relative; aspect-ratio: 16 / 9; overflow: hidden; text-align: left;
+  padding: clamp(1rem, 3vw, 1.8rem);
+  border: 1px solid var(--line); border-radius: 14px;
+  background:
+    radial-gradient(120% 120% at 85% 15%, rgba(202, 100, 220, 0.16), transparent 55%),
+    linear-gradient(160deg, #1a1622, var(--bg-2));
+}
+.board-top {
+  display: flex; justify-content: space-between; font-family: var(--mono);
+  font-size: 0.8rem; color: var(--ink-dim); letter-spacing: 0.03em;
+}
+.board-title { margin: 0.6em 0 0.3em; font-weight: 700; letter-spacing: 0.02em; color: var(--orange); }
+.board-list { margin: 0; padding-left: 1.1em; }
+.board-list li { margin: 0.15em 0; }
+.board-ring { position: absolute; right: 6%; bottom: 8%; width: clamp(48px, 14%, 84px); }
+
+/* ---- "Saadan virker det" + scroll-zoom ---- */
+.howto { padding: clamp(3rem, 8vw, 6rem) 0 0; text-align: center; }
+.howto-track { position: relative; }
+html.zoom-on .howto-track { height: 260vh; }
+@media (max-width: 640px) { html.zoom-on .howto-track { height: 200vh; } }
+
+.howto-stage { display: grid; gap: 2.5rem; padding: 2rem 0 4rem; }
+html.zoom-on .howto-stage {
+  position: sticky; top: 0; min-height: 100vh; align-content: center;
+  padding-inline: clamp(1.25rem, 5vw, 2.5rem); overflow: hidden;
+}
+
+.stage-media {
+  display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
+  margin-inline: auto;
+}
+@media (min-width: 720px) { html:not(.zoom-on) .stage-media { flex-direction: row; justify-content: center; } }
+.flow-arrow { font-size: 2rem; color: var(--lilla); }
+html.zoom-on .flow-arrow { display: none; }
+
+.zoom-photo, .zoom-board { width: min(460px, 82vw); }
+.zoom-photo {
+  aspect-ratio: 16 / 9; display: grid; align-content: center; gap: 0.15rem;
+  padding: 1.2rem; border-radius: 14px; position: relative;
+  background: linear-gradient(160deg, #e9e6dc, #cfccc0);
+  color: #23324a; font-family: var(--mono); transform: rotate(-1.5deg);
+}
+.scrawl { margin: 0; font-size: clamp(1rem, 3.5vw, 1.5rem); font-weight: 700; }
+.photo-tag {
+  position: absolute; top: 0.6rem; right: 0.8rem; font-size: 0.7rem;
+  color: #5a5648; letter-spacing: 0.08em;
+}
+
+html.zoom-on .stage-media { position: relative; height: min(60vh, 340px); width: min(460px, 82vw); }
+html.zoom-on .zoom-photo,
+html.zoom-on .zoom-board { position: absolute; inset: 0; width: 100%; will-change: opacity, transform; }
+html.zoom-on .zoom-photo {
+  opacity: calc(1 - var(--p) * 1.4);
+  transform: rotate(calc(-1.5deg * (1 - var(--p)))) scale(calc(1 - var(--p) * 0.12));
+}
+html.zoom-on .zoom-board {
+  opacity: calc(var(--p) * 1.6 - 0.15);
+  transform: scale(calc(0.92 + var(--p) * 0.08));
+}
+
+.steps {
+  list-style: none; margin: 0; padding: 0; text-align: left;
+  display: grid; gap: 1.25rem; max-width: 640px; margin-inline: auto;
+  counter-reset: step;
+}
+@media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+.step { padding-left: 2.4rem; position: relative; counter-increment: step; }
+.step::before {
+  content: counter(step); position: absolute; left: 0; top: 0;
+  width: 1.7rem; height: 1.7rem; display: grid; place-items: center;
+  border-radius: 999px; border: 1px solid var(--line);
+  font-family: var(--mono); font-size: 0.85rem; color: var(--ink);
+}
+.step p { color: var(--ink-dim); margin: 0; }
+html.zoom-on .step-1 { opacity: clamp(0.3, calc(var(--p) * 7), 1); }
+html.zoom-on .step-2 { opacity: clamp(0.3, calc((var(--p) - 0.33) * 7), 1); }
+html.zoom-on .step-3 { opacity: clamp(0.3, calc((var(--p) - 0.66) * 7), 1); }
+html.zoom-on .step { transition: opacity 0.2s linear; }
+
+/* ---- Features-grid ---- */
+.features { padding: clamp(3rem, 8vw, 6rem) 0; }
+.feature-grid {
+  list-style: none; margin: 2rem 0 0; padding: 0;
+  display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.card {
+  padding: 1.5rem; border: 1px solid var(--line); border-radius: 14px;
+  background: linear-gradient(160deg, var(--bg-2), var(--bg));
+}
+.card h3 { color: var(--orange); }
+.card p { margin: 0; color: var(--ink-dim); }
+
+/* ---- Telefon-sektion ---- */
+.phone-sec { padding: clamp(3rem, 8vw, 6rem) 0; }
+.phone-grid { display: grid; gap: clamp(2rem, 6vw, 4rem); align-items: center; }
+@media (min-width: 760px) { .phone-grid { grid-template-columns: 0.8fr 1.2fr; } }
+.phone-media { display: flex; justify-content: center; }
+.phone {
+  width: min(240px, 62vw); aspect-ratio: 9 / 18; padding: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.18); border-radius: 34px;
+  background: #100E15; display: grid; gap: 0.6rem; align-content: start;
+}
+.phone-board {
+  border: 1px solid var(--line); border-radius: 16px; padding: 0.9rem;
+  background: linear-gradient(160deg, #1a1622, var(--bg-2)); font-size: 0.85rem;
+}
+.phone-board p { margin: 0.2em 0; }
+.phone-pill {
+  text-align: center; padding: 0.6rem; border-radius: 999px;
+  background: var(--viola); color: #fff; font-size: 0.85rem; font-weight: 600;
+}
+.phone-pill.ghost { background: transparent; border: 1px solid var(--line); color: var(--ink-dim); }
+.ticks { margin: 1.5rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.8rem; }
+.ticks li { padding-left: 1.8rem; position: relative; }
+.ticks li::before {
+  content: "✓"; position: absolute; left: 0; color: var(--magenta); font-weight: 700;
+}
+
+/* ---- Positionering ---- */
+.position { padding: clamp(3rem, 8vw, 6rem) 0; }
+.position .wrap {
+  border-left: 3px solid var(--lilla); padding-left: clamp(1.5rem, 5vw, 2.5rem);
+}
+.position .lead { max-width: 58ch; }
+
+/* ---- Demo-CTA ---- */
+.demo { padding: clamp(3.5rem, 9vw, 7rem) 0; text-align: center; }
+.demo .lead { margin-inline: auto; }
+.demo .btn { margin-top: 1rem; }
+
+/* ---- Footer ---- */
+.site-foot { border-top: 1px solid var(--line); padding: 2rem 0; color: var(--ink-dim); font-size: 0.9rem; }
+.foot-grid { display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; }
+
+/* ---- Reveal ved scroll ---- */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+html:not(.js) .reveal { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .btn:hover { transform: none; }
+}
