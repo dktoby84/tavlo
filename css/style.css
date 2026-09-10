@@ -158,11 +158,11 @@ html.zoom-on .stage-media { position: relative; height: min(60vh, 340px); width:
 html.zoom-on .zoom-photo,
 html.zoom-on .zoom-board { position: absolute; inset: 0; width: 100%; will-change: opacity, transform; }
 html.zoom-on .zoom-photo {
-  opacity: calc(1 - var(--p) * 1.4);
+  opacity: calc(1.15 - var(--p) * 2.3);
   transform: rotate(calc(-1.5deg * (1 - var(--p)))) scale(calc(1 - var(--p) * 0.12));
 }
 html.zoom-on .zoom-board {
-  opacity: calc(var(--p) * 1.6 - 0.15);
+  opacity: calc(var(--p) * 2.3 - 0.95);
   transform: scale(calc(0.92 + var(--p) * 0.08));
 }
 
