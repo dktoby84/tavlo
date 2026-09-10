@@ -67,15 +67,20 @@ a { color: var(--orange); }
 
 /* ---- Wordmark + timer-ring ---- */
 .wordmark {
-  display: inline-flex; align-items: center; gap: 0.04em;
+  display: inline-block; white-space: nowrap;
   font-family: var(--mono); font-size: 1.5rem; font-weight: 500;
   letter-spacing: -0.03em; color: var(--ink); text-decoration: none;
 }
 .wordmark.small { font-size: 1.15rem; }
-.wordmark .ring { width: 0.82em; height: 0.82em; margin-inline: 0.02em; transform: translateY(0.04em); }
-.ring-track { fill: none; stroke: var(--line); stroke-width: 9; }
+/* ringen erstatter det sidste o: hoejde = et lille o (x-hoejde) paa grundlinjen,
+   afstand l->ring = oevrig bogstavafstand */
+.wordmark .ring {
+  display: inline-block; width: 1ex; height: 1ex;
+  vertical-align: baseline; margin-left: 0.06em;
+}
+.ring-track { fill: none; stroke: var(--line); stroke-width: 20; }
 .ring-arc {
-  fill: none; stroke: var(--guld); stroke-width: 9; stroke-linecap: round;
+  fill: none; stroke: var(--guld); stroke-width: 20; stroke-linecap: round;
   stroke-dasharray: 251; stroke-dashoffset: 66; transform: rotate(-90deg); transform-origin: 50% 50%;
 }
 
