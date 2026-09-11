@@ -26,6 +26,8 @@ Positionering: **supplement til centrets booking-app, ikke erstatning.**
 - Semantisk HTML, kontrast (WCAG AA), tastaturnavigation.
 - **Dansk tekst.** Commit-beskeder på dansk **uden æ/ø/å** (skriv ae/oe/aa).
   `git push` er tilladt herfra, når Tobias beder om det.
+- Sitet findes på dansk (`index.html`) og engelsk (`en/index.html`). Enhver
+  tekstændring laves på begge sider i samme commit.
 - Skriv aldrig "bekræftet med Tobias" e.l. om noget der ikke står skrevet.
   Antagelser markeres eksplicit som antagelser.
 
@@ -43,7 +45,8 @@ Positionering: **supplement til centrets booking-app, ikke erstatning.**
 
 ## Struktur
 ```
-index.html
+index.html      dansk
+en/index.html   engelsk — samme CSS/JS via relative "../" stier
 css/            stylesheets
 js/             scripts
 assets/         hero-billeder (se assets/README.md for lag-kontrakten)
