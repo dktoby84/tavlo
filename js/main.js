@@ -4,12 +4,22 @@
 
 // Opdatér ved hver aendring i dette script — vises i ?debug-boksen, saa man
 // kan se om browseren har den seneste version (cache, deploy).
-const BUILD = '2026-09-11T11:40Z';
+const BUILD = '2026-09-11T13:10Z';
 
 // Titlen staar ÉT sted og bruges baade af dashboardet og patchen over "WOD"
 // i hand.webp, saa de aldrig kan komme til at vise to forskellige ting.
 const WOD_TITLE = 'Styrke & kerne';
 document.querySelectorAll('[data-wod-title]').forEach((el) => { el.textContent = WOD_TITLE; });
+
+// Sprogskift: hvis siden er aabnet paa et bestemt afsnit (URL har et #anker
+// der matcher et id paa SIDEN), bevar samme anker paa den anden sprogversion
+// — ellers gaar linket til toppen af den anden side (allerede default-href).
+// Ren navigation, ingen tekst skiftes med JS.
+if (location.hash && document.getElementById(location.hash.slice(1))) {
+  document.querySelectorAll('[data-lang-link]').forEach((a) => {
+    a.href = a.href.split('#')[0] + location.hash;
+  });
+}
 
 // ---- Reveal: fade elementer ind naar de rammer viewporten ----
 const io = new IntersectionObserver((entries) => {

@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="da">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tavlo — dagens program på storskærmen, styret fra lommen</title>
-  <meta name="description" content="Tavlo viser dagens program på storskærmen i salen — interval-timer, beskeder, events og billeder. Fotografér tavlen, så står den på skærmen. Styret fra telefonen på under et minut.">
+  <title>Tavlo — today's programme on the big screen, run from your pocket</title>
+  <meta name="description" content="Tavlo shows today's programme on the big screen in the gym — interval timer, messages, events and photos. Snap the whiteboard, and it's on the screen. Run from your phone in under a minute.">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#0B0A0D">
   <!-- Fjernes ved lancering — sitet er ikke offentligt annonceret endnu. -->
@@ -13,32 +13,32 @@
   <link rel="alternate" hreflang="en" href="https://dktoby84.github.io/tavlo/en/index.html">
   <link rel="alternate" hreflang="x-default" href="https://dktoby84.github.io/tavlo/index.html">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='11' fill='none' stroke='%23F2B941' stroke-width='4' stroke-linecap='round' stroke-dasharray='52 17' transform='rotate(-90 16 16)'/></svg>">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="../css/style.css">
   <script>document.documentElement.classList.add('js')</script>
 </head>
 <body id="top">
-  <a class="skip" href="#indhold">Spring til indhold</a>
+  <a class="skip" href="#indhold">Skip to content</a>
 
   <header class="site">
     <a class="wordmark" href="#top" aria-label="Tavlo"><span>tavl</span><svg class="ring" viewBox="0 0 100 100" aria-hidden="true"><circle class="ring-track" cx="50" cy="50" r="40"/><circle class="ring-arc" cx="50" cy="50" r="40"/></svg></a>
     <div class="site__actions">
       <nav class="lang-switch" aria-label="Sprog / Language">
-        <a href="index.html" lang="da" hreflang="da" aria-current="page" data-lang-link>
+        <a href="../index.html" lang="da" hreflang="da" data-lang-link>
           <svg class="lang-switch__flag" viewBox="0 0 20 15" aria-hidden="true"><rect width="20" height="15" fill="#c60c30"/><rect x="7" width="3" height="15" fill="#fff"/><rect y="6" width="20" height="3" fill="#fff"/></svg>
           <span>DA</span>
         </a>
-        <a href="en/index.html" lang="en" hreflang="en" data-lang-link>
-          <svg class="lang-switch__flag" viewBox="0 0 20 15" aria-hidden="true"><clipPath id="uk-clip-da"><rect width="20" height="15"/></clipPath><g clip-path="url(#uk-clip-da)"><rect width="20" height="15" fill="#00247d"/><path d="M0,0 L20,15 M20,0 L0,15" stroke="#fff" stroke-width="3"/><path d="M0,0 L20,15 M20,0 L0,15" stroke="#cf142b" stroke-width="1"/><path d="M10,0 V15 M0,7.5 H20" stroke="#fff" stroke-width="5"/><path d="M10,0 V15 M0,7.5 H20" stroke="#cf142b" stroke-width="3"/></g></svg>
+        <a href="index.html" lang="en" hreflang="en" aria-current="page" data-lang-link>
+          <svg class="lang-switch__flag" viewBox="0 0 20 15" aria-hidden="true"><clipPath id="uk-clip-en"><rect width="20" height="15"/></clipPath><g clip-path="url(#uk-clip-en)"><rect width="20" height="15" fill="#00247d"/><path d="M0,0 L20,15 M20,0 L0,15" stroke="#fff" stroke-width="3"/><path d="M0,0 L20,15 M20,0 L0,15" stroke="#cf142b" stroke-width="1"/><path d="M10,0 V15 M0,7.5 H20" stroke="#fff" stroke-width="5"/><path d="M10,0 V15 M0,7.5 H20" stroke="#cf142b" stroke-width="3"/></g></svg>
           <span>EN</span>
         </a>
       </nav>
-      <a class="btn btn-ghost" href="#demo">Book en demo</a>
+      <a class="btn btn-ghost" href="#demo">Book a demo</a>
     </div>
   </header>
 
   <main id="indhold">
 
-    <section id="hero" class="hero-seq" aria-label="Fra telefonen til storskærmen">
+    <section id="hero" class="hero-seq" aria-label="From the phone to the big screen">
       <div class="hero-seq__track" data-hero-track>
         <div class="hero-seq__stage" data-hero-stage>
 
@@ -47,11 +47,13 @@
                paa #layer-screen (mapper 1920x1080 til tv-skaermens fire hjoerner). -->
           <div class="hero-scene" data-hero-scene aria-hidden="true">
             <figure class="hero-scene__photo-fig">
-              <img class="hero-scene__photo" src="assets/room.jpg" alt="" width="2752" height="1536">
-              <figcaption class="hero-layer__cap">1 — Rummet. Storskærmen på væggen er sort.</figcaption>
+              <img class="hero-scene__photo" src="../assets/room.jpg" alt="" width="2752" height="1536">
+              <figcaption class="hero-layer__cap">1 — The room. The screen on the wall is off.</figcaption>
             </figure>
 
             <div class="hero-scene__screen" id="layer-screen">
+              <!-- Dashboard-indholdet er produktets rigtige UI-sprog og er med vilje
+                   IKKE oversat — se CLAUDE.md. -->
               <div class="dash">
                 <div class="dash__top">
                   <span class="dash__brand"><span class="dash__brand-ring" aria-hidden="true"></span><span class="dash__brand-label">Dit logo</span></span>
@@ -123,7 +125,7 @@
                   <span class="dash__evcount">om 5 dage</span>
                 </div>
               </div>
-              <p class="hero-layer__cap">3 — Storskærmen: dagens program.</p>
+              <p class="hero-layer__cap">3 — The screen: today's programme.</p>
             </div>
 
             <svg class="hero-scene__debug" data-hero-debug viewBox="0 0 2752 1536" preserveAspectRatio="none" hidden>
@@ -136,13 +138,13 @@
                billede, ingen skaerm-mock ovenpaa. -->
           <div class="hero-phone" id="layer-hand" aria-hidden="true">
             <div class="hero-phone__device">
-              <img class="hero-phone__img" src="assets/hand.webp" alt="">
+              <img class="hero-phone__img" src="../assets/hand.webp" alt="">
               <!-- daekker "WOD" fra fotoet med samme titel som dashboardet (WOD_TITLE
                    i js/main.js). Faldbacktekst her er kun til uden-JS — hold den i sync. -->
               <div class="hero-phone__title" aria-hidden="true"><span data-wod-title>Styrke &amp; kerne</span></div>
               <div class="hero-phone__glow" data-phone-glow></div>
             </div>
-            <p class="hero-layer__cap">2 — Telefonen med Tavlo.</p>
+            <p class="hero-layer__cap">2 — The phone with Tavlo.</p>
           </div>
 
           <!-- SEND-BUE: telefon -> tv, mellem etape 2/3 og 4. Ren p-styret via JS
@@ -167,9 +169,9 @@
 
           <!-- Del A: overskrift + CTA — synlig oven paa rummet fra start. -->
           <div class="hero-seq__copy" id="hero-copy">
-            <h1>Tavlen på væggen. Styret fra lommen.</h1>
-            <p class="lead">Fotografér tavlen. Så står den på skærmen.</p>
-            <a class="btn btn-primary" href="#demo">Book en demo</a>
+            <h1>The whiteboard on the wall. Run from your pocket.</h1>
+            <p class="lead">Snap the whiteboard. It's on the screen.</p>
+            <a class="btn btn-primary" href="#demo">Book a demo</a>
           </div>
 
         </div>
@@ -178,28 +180,28 @@
 
     <section id="features" class="features">
       <div class="wrap">
-        <h2 class="reveal">Hele salen ser det samme</h2>
-        <p class="lead reveal">Én skærm på væggen. Alle kigger samme sted — uden at fiske telefonen frem.</p>
+        <h2 class="reveal">The whole gym sees the same thing</h2>
+        <p class="lead reveal">One screen on the wall. Everyone looks the same place — no need to grab a phone.</p>
         <ul class="feature-grid">
           <li class="card reveal">
-            <h3>Dagens program</h3>
-            <p>WOD, hold eller plan. Læst fra tavlen og sat op automatisk.</p>
+            <h3>Today's programme</h3>
+            <p>WOD, class or plan. Read from the whiteboard and set up automatically.</p>
           </li>
           <li class="card reveal">
-            <h3>Interval-timer</h3>
-            <p>EMOM, Tabata og runder på det store ur. Start den fra telefonen.</p>
+            <h3>Interval timer</h3>
+            <p>EMOM, Tabata and rounds on the big clock. Start it from your phone.</p>
           </li>
           <li class="card reveal">
-            <h3>Beskeder</h3>
-            <p>Lukket søndag, nyt hold, husk drikkedunken. På skærmen med det samme.</p>
+            <h3>Messages</h3>
+            <p>Closed Sunday, new class, don't forget your water bottle. On the screen straight away.</p>
           </li>
           <li class="card reveal">
             <h3>Events</h3>
-            <p>Konkurrencer og sociale arrangementer med dato og tilmelding.</p>
+            <p>Competitions and social events, with date and sign-up.</p>
           </li>
           <li class="card reveal">
-            <h3>Billeder</h3>
-            <p>Fotos fra salen og seneste event i rullende visning mellem passene.</p>
+            <h3>Photos</h3>
+            <p>Photos from the gym and the latest event, in a rolling slideshow between classes.</p>
           </li>
         </ul>
       </div>
@@ -208,7 +210,8 @@
     <section id="tavle" class="phone-sec">
       <div class="wrap phone-grid">
         <div class="phone-media reveal" aria-hidden="true">
-          <!-- Appens hjemmeskaerm, ren HTML/CSS — ingen ny billedfil. -->
+          <!-- Appens hjemmeskaerm, ren HTML/CSS — ingen ny billedfil. Med vilje
+               IKKE oversat, se CLAUDE.md. -->
           <div class="phone">
             <p class="phone__top">Dit-logo</p>
             <div class="phone__wod">
@@ -245,19 +248,20 @@
               <span>Indst.</span>
             </nav>
           </div>
+          <p class="lang-note">The app and screen are in Danish.</p>
         </div>
         <div class="phone-copy">
-          <h2 class="reveal">Skriv som du plejer. Tavlo sætter det op.</h2>
+          <h2 class="reveal">Write the way you always have. Tavlo lays it out.</h2>
           <ol class="tavle-steps reveal">
-            <li><span class="tavle-steps__num mono" style="color: var(--orange)">1</span><p>Tag et billede af tavlen, et skilt eller et program</p></li>
-            <li><span class="tavle-steps__num mono" style="color: var(--magenta)">2</span><p>Tavlo laver det om til ren tekst</p></li>
-            <li><span class="tavle-steps__num mono" style="color: var(--lilla)">3</span><p>Ret og tilføj, før du gemmer</p></li>
-            <li><span class="tavle-steps__num mono" style="color: var(--viola)">4</span><p>Programmet står på skærmen, læseligt bagerst i salen</p></li>
+            <li><span class="tavle-steps__num mono" style="color: var(--orange)">1</span><p>Take a photo of the whiteboard, a sign or a programme</p></li>
+            <li><span class="tavle-steps__num mono" style="color: var(--magenta)">2</span><p>Tavlo turns it into clean text</p></li>
+            <li><span class="tavle-steps__num mono" style="color: var(--lilla)">3</span><p>Edit and add to it before you save</p></li>
+            <li><span class="tavle-steps__num mono" style="color: var(--viola)">4</span><p>The programme is on the screen, readable from the back of the room</p></li>
           </ol>
           <ul class="tavle-minor reveal">
-            <li><span aria-hidden="true">✍️</span> <span><strong>Skriv selv.</strong> Opret en ny WOD og skriv programmet direkte i appen.</span></li>
-            <li><span aria-hidden="true">🔒</span> <span><strong>Private programmer.</strong> Gem dine egne WODs privat, så de andre trænere ikke ser dem.</span></li>
-            <li><span aria-hidden="true">⭐</span> <span><strong>Favoritbilleder.</strong> Markér et billede som favorit, så bliver det på skærmen.</span></li>
+            <li><span aria-hidden="true">✍️</span> <span><strong>Write it yourself.</strong> Create a new WOD and type the programme straight into the app.</span></li>
+            <li><span aria-hidden="true">🔒</span> <span><strong>Private programmes.</strong> Keep your own WODs private, so other coaches can't see them.</span></li>
+            <li><span aria-hidden="true">⭐</span> <span><strong>Favourite photos.</strong> Mark a photo as a favourite, and it stays on the screen.</span></li>
           </ul>
         </div>
       </div>
@@ -265,17 +269,17 @@
 
     <section id="position" class="position">
       <div class="wrap">
-        <h2 class="reveal">Et supplement til jeres booking-app — ikke en erstatning.</h2>
-        <p class="lead reveal">Booking, betaling og medlemskab bliver, hvor det er. Tavlo tager salen
-          og storskærmen — det stykke, jeres booking-app ikke dækker.</p>
+        <h2 class="reveal">Works alongside your booking app — it doesn't replace it.</h2>
+        <p class="lead reveal">Booking, payment and membership stay where they are. Tavlo takes the gym floor
+          and the big screen — the part your booking app doesn't cover.</p>
       </div>
     </section>
 
     <section id="demo" class="demo">
       <div class="wrap">
-        <h2 class="reveal">Dagens program. Hele salen. Under et minut.</h2>
-        <p class="lead reveal">Skriv som du plejer. Tavlo sætter det op. Book en demo, så viser vi det på jeres egen skærm.</p>
-        <p class="reveal"><a class="btn btn-primary" href="mailto:hejtavlo@gmail.com?subject=Demo%20af%20Tavlo">Book en demo</a></p>
+        <h2 class="reveal">Today's programme. The whole gym. Under a minute.</h2>
+        <p class="lead reveal">Write the way you always have. Tavlo lays it out. Book a demo, and we'll show it on your own screen.</p>
+        <p class="reveal"><a class="btn btn-primary" href="mailto:hejtavlo@gmail.com?subject=Tavlo%20demo">Book a demo</a></p>
       </div>
     </section>
 
@@ -289,6 +293,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js" defer></script>
+  <script src="../js/main.js" defer></script>
 </body>
 </html>
