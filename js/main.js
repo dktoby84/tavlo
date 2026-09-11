@@ -4,22 +4,32 @@
 
 // Opdatér ved hver aendring i dette script — vises i ?debug-boksen, saa man
 // kan se om browseren har den seneste version (cache, deploy).
-const BUILD = '2026-09-11T13:10Z';
+const BUILD = '2026-09-11T13:45Z';
 
 // Titlen staar ÉT sted og bruges baade af dashboardet og patchen over "WOD"
 // i hand.webp, saa de aldrig kan komme til at vise to forskellige ting.
 const WOD_TITLE = 'Styrke & kerne';
 document.querySelectorAll('[data-wod-title]').forEach((el) => { el.textContent = WOD_TITLE; });
 
-// Sprogskift: hvis siden er aabnet paa et bestemt afsnit (URL har et #anker
-// der matcher et id paa SIDEN), bevar samme anker paa den anden sprogversion
-// — ellers gaar linket til toppen af den anden side (allerede default-href).
-// Ren navigation, ingen tekst skiftes med JS.
-if (location.hash && document.getElementById(location.hash.slice(1))) {
-  document.querySelectorAll('[data-lang-link]').forEach((a) => {
-    a.href = a.href.split('#')[0] + location.hash;
+// Sprogskift: lige foer klik regnes hvilket afsnit der rent faktisk er i
+// billedet lige nu (IKKE en gammel #anker fra url'en — den kan vaere forbi et
+// afsnit man klikkede sig hen til og siden scrollede vaek fra igen), og
+// linket faar det som anker. Intet match (fx i hero'en eller footeren) ->
+// toppen af den anden side (default-href, uaendret). Ren navigation, ingen
+// tekst skiftes med JS.
+document.querySelectorAll('[data-lang-link]').forEach((a) => {
+  a.addEventListener('click', () => {
+    let current = null;
+    for (const id of ['features', 'tavle', 'position', 'demo']) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      const mid = r.top + r.height / 2;
+      if (mid > 0 && mid < innerHeight) current = id;
+    }
+    a.href = a.href.split('#')[0] + (current ? '#' + current : '');
   });
-}
+});
 
 // ---- Reveal: fade elementer ind naar de rammer viewporten ----
 const io = new IntersectionObserver((entries) => {
