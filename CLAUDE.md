@@ -46,9 +46,60 @@ Positionering: **supplement til centrets booking-app, ikke erstatning.**
 index.html
 css/            stylesheets
 js/             scripts
-assets/         billeder + ikoner (pladsholdere indtil session 2)
+assets/         hero-billeder (se assets/README.md for lag-kontrakten)
+billeder/       git-ignoreret, reference-fotos fra centret (brand + ansigter)
 screenshots/    git-ignoreret, kun til verifikation
 ```
+
+## Hero-sekvensen
+Scroll-drevet sekvens i seks etaper (sal i hvile → telefon løftes og sender til
+skærmen → dashboard fader ind → telefon sænkes og kameraet zoomer ind →
+landing). Ét fremdriftstal (`p`, glidet af `frame()`'s inerti mod
+`trackProgress()`) styrer alt — CSS-variablerne og hjælpefunktionerne hedder:
+
+1. **Hvile** — tv sort, `#hero-copy` (overskrift + CTA) synlig.
+2. **Telefonen løftes** (`#layer-hand`, `hand.webp`) — styret af `phoneUp`.
+   Samtidig forsvinder `#hero-copy` (`copyDim`), altid færdig før telefonen
+   når teksten.
+3. **Send-buen** (`updateSendArc`, drevet af `sendDraw`/`sendEnvelope`/
+   `sendFlash`/`sendPulse`) tegner fra telefonskærmen til tv'et.
+4. **Dashboardet** (`#layer-screen`) fader ind på tv'et (`tvOn`) — ingen zoom
+   endnu.
+5. **Telefonen sænkes** (`phoneDown`), kameraet zoomer ind mod tv'et
+   (`pZoom`, `restScale`/`zoomMax` i `layoutScene()`), fotoet fader til sort
+   (`veil`), og dashboardet folder ud til en flad 16:9-flade (`pDetach`) —
+   folder først ud når fotoet er helt sort, ellers ses tv-rammens skæve form
+   bag det flade dashboard.
+6. **Landing** — kort hold, så slipper sticky til næste sektion. På
+   portræt-skærme krymper `layoutScene()` selve stage-boksens højde i denne
+   fase (se `HEADER_GAP_PX`, `GAP_TARGET_PX`, `FEATURES_PAD_PX`), så
+   dashboardet lander tæt under headeren uden dødt scroll bagefter.
+
+Øvrige byggeklodser:
+- Homografien (`matrix3dFromQuad`, `TV`/`TV_CX`/`TV_CY`, `PHOTO_W`/`PHOTO_H`)
+  mapper dashboardets flade til tv'ets fire hjørner i `room.jpg`.
+- `svhPx`/`lvhPx` (skjulte probes) og `stageOccupiedPx` holder styr på
+  Safaris dynamiske værktøjslinje: baggrundslag dækker altid hele skærmen,
+  mens det der skal kunne læses/nås holder sig inden for det garanterede
+  (svh-baserede) område.
+- Titlen på både dashboardet og telefonen kommer fra ÉT sted, `WOD_TITLE`.
+- Fald-tilbage (`prefers-reduced-motion` / uden JS): lagene stables lodret
+  med billedtekst, ingen animation. `html.hero-on` (sat af `js/main.js`, se
+  betingelsen øverst i filen) lægger den sticky, scroll-drevne version ovenpå.
+- Alle tal (etape-grænser, mål, marginer) bor kun i `js/main.js` — ret dem
+  ét sted der, ikke i denne fil.
+
+**Debug:** `?debug` i URL'en viser en liveopdateret aflæsningsboks med alle
+etape-variable. `BUILD`-konstanten øverst i `js/main.js` opdateres ved hver
+ændring i filen, så boksen kan bruges til at se om browseren kører den
+nyeste version (cache, deploy).
+
+**Billedkrav** til `room.jpg`, `hand.webp` og fonte: se `assets/README.md`.
+
+**Test:** Playwright, både WebKit ved iPhone 15-mål og Chromium ved
+1920×1080. Test på en rigtig iPhone sker via en lokal server (fx
+`python -m http.server`) — Playwright kan ikke selv vise Safaris
+værktøjslinje.
 
 ## Hosting
 GitHub Pages + custom domæne `tavlo.dk`.
