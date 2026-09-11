@@ -102,23 +102,6 @@ nyeste version (cache, deploy).
 værktøjslinje.
 
 ## Hosting
-GitHub Pages + custom domæne `tavlo.dk`.
-
-**GitHub Pages-opsætning**
-- Settings → Pages → Source: **Deploy from a branch**, branch `master`, mappe `/ (root)`.
-  Sitet er statisk uden build, så ingen Actions-workflow.
-- Custom domain-feltet sættes til `tavlo.dk`. GitHub skriver selv `CNAME`-filen
-  når feltet gemmes.
-- "Enforce HTTPS" slås til når certifikatet er udstedt (kan tage op til et døgn).
-
-**DNS hos domæneudbyder** (verificér mod GitHubs egen dokumentation — IP'er kan ændre sig)
-- Apex `tavlo.dk`: fire A-records → `185.199.108.153`, `185.199.109.153`,
-  `185.199.110.153`, `185.199.111.153` (og gerne tilsvarende AAAA).
-- `www.tavlo.dk`: CNAME → `dktoby84.github.io`.
-
-**CNAME-tjek — kør før hver commit der rører repo-roden**
-- `CNAME` skal ligge i repo-roden og indeholde præcis én linje: `tavlo.dk`
-  (intet skema, ingen `www`, ingen blank linje-støj).
-- Filen skal være tracked af git og må **ikke** stå i `.gitignore`.
-- Forsvinder `CNAME` fra et commit, nulstiller GitHub Pages custom domain og
-  sitet falder tilbage til `dktoby84.github.io` med brudt HTTPS.
+Hosting: GitHub Pages på https://dktoby84.github.io/tavlo/, branch master,
+root. Intet domæne endnu. Skriv aldrig et domænenavn ind i koden, og opret
+ingen CNAME-fil. Kontakt: hejtavlo@gmail.com.
