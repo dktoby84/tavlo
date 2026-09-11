@@ -1,31 +1,42 @@
 /* Tavlo — marketing-site. Vanilla CSS, ingen build. */
 
+/* Smal, fed display-skrift til dashboard-mockets overskrifter (Oswald 700,
+   OFL-licens, selv-hostet — ingen Google Fonts-CDN paa den lave side). */
+@font-face {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../assets/fonts/oswald-700.woff2") format("woff2");
+}
+
 :root {
-  --guld: #F2B941;   /* kun maerket + primaer CTA */
+  --guld: #F2B941;   /* kun maerket, timer-ringen og primaer CTA */
   --orange: #F0A182;
   --magenta: #CA64DC;
   --lilla: #9046F3;
   --viola: #6525F7;
   --bg: #0B0A0D;
   --bg-2: #131118;
+  --bg-3: #1b1723;
   --ink: #ECE8E1;
   --ink-dim: #A39FA9;
   --line: rgba(255, 255, 255, 0.12);
   --mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   /* Headline-font vaelges i session 2 (UI UX Pro Max). Solid systemstak indtil da. */
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --display: "Oswald", "Arial Narrow", var(--sans);
   --wrap: 1080px;
 }
 
 * { box-sizing: border-box; }
 
+/* Ingen overflow paa html/body — enhver ikke-visible vaerdi paa en forfader
+   kan faelde position: sticky i hero-sekvensen. */
 html { scroll-behavior: smooth; }
-
-html { overflow-x: clip; }
 
 body {
   margin: 0;
-  overflow-x: clip;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
@@ -50,7 +61,7 @@ a { color: var(--orange); }
   background: var(--ink); color: var(--bg); padding: 0.6rem 1rem;
   border-radius: 8px; text-decoration: none; transition: top 0.15s;
 }
-.skip:focus { top: 1rem; z-index: 10; }
+.skip:focus { top: 1rem; z-index: 20; }
 
 .wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: clamp(1.25rem, 5vw, 2.5rem); }
 
@@ -86,7 +97,7 @@ a { color: var(--orange); }
 
 /* ---- Header ---- */
 .site {
-  position: sticky; top: 0; z-index: 5;
+  position: sticky; top: 0; z-index: 15;
   display: flex; align-items: center; justify-content: space-between;
   gap: 1rem; padding: 0.8rem clamp(1.25rem, 5vw, 2.5rem);
   background: rgba(11, 10, 13, 0.72); backdrop-filter: blur(10px);
@@ -99,96 +110,305 @@ a { color: var(--orange); }
   .site .btn { padding: 0.5rem 0.85rem; font-size: 0.85rem; }
 }
 
-/* ---- Hero ---- */
-.hero { padding: clamp(3rem, 8vw, 6rem) 0; }
-.hero-grid { display: grid; gap: clamp(2rem, 6vw, 4rem); align-items: center; }
-.hero-grid > *, .phone-grid > * { min-width: 0; }
-@media (min-width: 860px) { .hero-grid { grid-template-columns: 1.05fr 0.95fr; } }
-.eyebrow { color: var(--magenta); font-weight: 600; letter-spacing: 0.02em; margin-bottom: 0.75rem; }
-.lead { color: var(--ink-dim); font-size: 1.1em; max-width: 42ch; }
-.cta-row { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.5rem; }
+/* =====================================================================
+   HERO-SEKVENS
+   Fald-tilbage (dette): fem lag stablet lodret med billedtekst, ingen
+   animation. html.hero-on (sat af JS naar bevaegelse er tilladt) laegger
+   den sticky, scroll-drevne version ovenpaa.
+   ===================================================================== */
+.hero-seq { position: relative; background: var(--bg); }
+.hero-layer__cap { margin: 0; color: var(--ink-dim); max-width: 46ch; text-align: center; padding-inline: 1.25rem; }
 
-/* ---- Board-mockup (storskaerm) ---- */
-.board {
-  position: relative; aspect-ratio: 16 / 9; overflow: hidden; text-align: left;
-  padding: clamp(1rem, 3vw, 1.8rem);
-  border: 1px solid var(--line); border-radius: 14px;
-  background:
-    radial-gradient(120% 120% at 85% 15%, rgba(202, 100, 220, 0.16), transparent 55%),
-    linear-gradient(160deg, #1a1622, var(--bg-2));
+/* ============ FALD-TILBAGE: etaperne stablet lodret, ingen bevaegelse ============ */
+.hero-seq__stage { display: grid; gap: clamp(2rem, 6vw, 4rem); padding: clamp(2.5rem, 7vw, 5rem) 0; }
+.hero-scene { display: contents; }   /* boernene bliver direkte stage-grid-items -> kan ordnes */
+.hero-scene__photo-fig { order: 1; margin: 0; text-align: center; }
+.hero-scene__photo {
+  display: block; width: min(920px, 92vw); height: auto; margin-inline: auto;
+  aspect-ratio: 16 / 9; object-fit: cover;
+  border-radius: 16px; border: 1px solid var(--line);
+  background: linear-gradient(160deg, var(--bg-3), var(--bg));
 }
-.board-top {
-  display: flex; justify-content: space-between; font-family: var(--mono);
-  font-size: 0.8rem; color: var(--ink-dim); letter-spacing: 0.03em;
+.hero-phone { order: 2; display: grid; justify-items: center; gap: 1rem; }
+.hero-phone__device {
+  position: relative; width: min(320px, 66vw); aspect-ratio: 800 / 1189;
+  border-radius: 16px; overflow: hidden; border: 1px solid var(--line);
+  background: linear-gradient(160deg, var(--bg-3), var(--bg));
 }
-.board-title { margin: 0.6em 0 0.3em; font-weight: 700; letter-spacing: 0.02em; color: var(--orange); }
-.board-list { margin: 0; padding-left: 1.1em; }
-.board-list li { margin: 0.15em 0; }
-.board-ring { position: absolute; right: 6%; bottom: 8%; width: clamp(48px, 14%, 84px); }
+.hero-phone__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-scene__screen { order: 3; text-align: center; }
+.hero-scene__screen .dash { margin-inline: auto; width: min(1040px, 92vw); }
+.hero-seq__copy {
+  order: 4; display: grid; justify-items: center; gap: 1rem; text-align: center;
+  padding-inline: clamp(1.25rem, 5vw, 2.5rem);
+}
+.hero-seq__copy h1 { max-width: 16ch; }
+.hero-seq__copy .lead { max-width: 40ch; margin: 0; }
+.hero-layer__cap { margin-top: 1rem; }
+.hero-scene__debug { display: none; }
+.dash { width: min(1040px, 92vw); }
 
-/* ---- "Saadan virker det" + scroll-zoom ---- */
-.howto { padding: clamp(3rem, 8vw, 6rem) 0 0; text-align: center; }
-.howto-track { position: relative; }
-html.zoom-on .howto-track { height: 260vh; }
-@media (max-width: 640px) { html.zoom-on .howto-track { height: 200vh; } }
+/* ============ html.hero-on: den scroll-drevne version ============ */
+html.hero-on .hero-seq__track { height: 520svh; }
+@media (max-width: 640px) { html.hero-on .hero-seq__track { height: 470svh; } }
 
-.howto-stage { display: grid; gap: 2.5rem; padding: 2rem 0 4rem; }
-html.zoom-on .howto-stage {
-  position: sticky; top: 0; min-height: 100vh; align-content: center;
-  padding-inline: clamp(1.25rem, 5vw, 2.5rem); overflow: hidden;
-}
-
-.stage-media {
-  display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
-  margin-inline: auto;
-}
-@media (min-width: 720px) { html:not(.zoom-on) .stage-media { flex-direction: row; justify-content: center; } }
-.flow-arrow { font-size: 2rem; color: var(--lilla); }
-html.zoom-on .flow-arrow { display: none; }
-
-.zoom-photo, .zoom-board { width: min(460px, 82vw); }
-.zoom-photo {
-  aspect-ratio: 16 / 9; display: grid; align-content: center; gap: 0.15rem;
-  padding: 1.2rem; border-radius: 14px; position: relative;
-  background: linear-gradient(160deg, #e9e6dc, #cfccc0);
-  color: #23324a; font-family: var(--mono); transform: rotate(-1.5deg);
-}
-.scrawl { margin: 0; font-size: clamp(1rem, 3.5vw, 1.5rem); font-weight: 700; }
-.photo-tag {
-  position: absolute; top: 0.6rem; right: 0.8rem; font-size: 0.7rem;
-  color: #5a5648; letter-spacing: 0.08em;
+/* --hdr-h saettes af js/main.js (headerens maalte hoejde) — stagen skal sidde
+   LIGE under headeren, ellers begge sticky-elementer om at sidde paa y=0 og
+   headeren daekker toppen af scenen (tv'et rammer headeren).
+   lvh, ikke svh: stagen skal daekke hele skaermen ogsaa naar Safaris flydende
+   vaerktoejslinje forsvinder midt i scroll (dynamisk, stoerre viewport) —
+   ellers naar baggrundslagene (foto, haand) ikke helt ned, og der staar en
+   sort bjaelke i bunden med haanden skaaret vandret over. Det GARANTEREDE
+   (svh-baserede) omraade bruges kun i JS til at placere det der skal kunne
+   ses (dashboardets slut-rektangel, se layoutScene/safeVh). */
+html.hero-on .hero-seq__stage {
+  position: sticky; top: var(--hdr-h, 0px); height: calc(100lvh - var(--hdr-h, 0px));
+  padding: 0; display: block; overflow: hidden;
 }
 
-html.zoom-on .stage-media { position: relative; height: min(60vh, 340px); width: min(460px, 82vw); }
-html.zoom-on .zoom-photo,
-html.zoom-on .zoom-board { position: absolute; inset: 0; width: 100%; will-change: opacity, transform; }
-html.zoom-on .zoom-photo {
-  opacity: calc(1.15 - var(--p) * 2.3);
-  transform: rotate(calc(-1.5deg * (1 - var(--p)))) scale(calc(1 - var(--p) * 0.12));
+/* --- Scene: room.jpg + dashboard i ét koordinatrum, transform fra JS --- */
+html.hero-on .hero-scene {
+  position: absolute; top: 0; left: 0;
+  width: 2752px; height: 1536px;          /* = room.jpg naturlige pixels */
+  display: block; transform-origin: 0 0;
+  will-change: transform; z-index: 0;
 }
-html.zoom-on .zoom-board {
-  opacity: calc(var(--p) * 2.3 - 0.95);
-  transform: scale(calc(0.92 + var(--p) * 0.08));
+html.hero-on .hero-scene__photo-fig {
+  position: absolute; inset: 0; margin: 0; display: block;
+  background: var(--bg); z-index: 1;      /* sort bund naar fotoet fader */
+}
+html.hero-on .hero-scene__photo {
+  width: 100%; height: 100%; display: block;
+  border: 0; border-radius: 0; object-fit: fill;
+  opacity: calc(1 - var(--veil, 0));
+}
+html.hero-on .hero-scene__screen {
+  position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; display: block;
+  transform-origin: 0 0; z-index: 2;
+}
+/* opacity paa .dash (ikke #layer-screen selv) saa send-buens ankomst-glød
+   (box-shadow paa #layer-screen, se send-buen laengere nede) kan ses FOER
+   dashboardets indhold faeder ind i etape 4 — de deler ellers opacity 0. */
+html.hero-on .hero-scene__screen .dash { opacity: var(--tv-on, 0); }
+html.hero-on .hero-scene__screen .dash { width: 100%; height: 100%; aspect-ratio: auto; }
+html.hero-on .hero-scene .hero-layer__cap { display: none; }
+html.hero-on .hero-scene__debug {
+  display: block; position: absolute; inset: 0; width: 100%; height: 100%;
+  overflow: visible; pointer-events: none; z-index: 3;
+}
+html.hero-on .hero-scene__debug .dbg-tv { fill: none; stroke: #ff2d2d; stroke-width: 4; }
+html.hero-on .hero-scene__debug .dbg-tv-dot { fill: #ff2d2d; }
+html.hero-on .hero-scene__debug .dbg-dst { fill: none; stroke: #34d399; stroke-width: 4; stroke-dasharray: 14 10; }
+.hero-debug-readout {
+  position: fixed; left: 8px; bottom: 8px; z-index: 50;
+  max-width: calc(100vw - 16px); max-height: 60vh; overflow: auto;
+  font: 11px/1.5 var(--mono); color: #34d399; background: rgba(0, 0, 0, 0.82);
+  padding: 7px 10px; border-radius: 6px; white-space: pre-wrap; word-break: break-word;
+  pointer-events: none;
 }
 
-.steps {
-  list-style: none; margin: 0; padding: 0; text-align: left;
-  display: grid; gap: 1.25rem; max-width: 640px; margin-inline: auto;
-  counter-reset: step;
+/* --- Telefon: stiger op (--phone-up), holder, saenkes ud (--phone-down) ---
+   Hoejde er STABIL lvh (ikke 100%/inset:0 af stagen) — stagen krymper selv i
+   landings-fasen (se js/main.js), og translateY her er en PROCENT af denne
+   boks' egen hoejde. Skulle den krympe med, ville skjule-afstanden ogsaa
+   krympe, og haanden kunne blive delvist synlig igen mens dashboardet lander. */
+html.hero-on .hero-phone {
+  position: absolute; top: 0; left: 0; width: 100%;
+  height: calc(100lvh - var(--hdr-h, 0px));
+  display: grid; place-items: center; z-index: 4;
+  transform: translateY(calc(140% - 108% * var(--phone-up, 0) + 108% * var(--phone-down, 0)));
 }
-@media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); } }
-.step { padding-left: 2.4rem; position: relative; counter-increment: step; }
-.step::before {
-  content: counter(step); position: absolute; left: 0; top: 0;
-  width: 1.7rem; height: 1.7rem; display: grid; place-items: center;
-  border-radius: 999px; border: 1px solid var(--line);
-  font-family: var(--mono); font-size: 0.85rem; color: var(--ink);
+html.hero-on .hero-phone__device {
+  --ph: 76lvh;   /* baggrundslag (haand) — lvh, se note ved .hero-seq__stage */
+  height: var(--ph); width: calc(var(--ph) * 800 / 1189);
+  border: 0; border-radius: 0; background: none; overflow: visible;
 }
-.step p { color: var(--ink-dim); margin: 0; }
-html.zoom-on .step-1 { opacity: clamp(0.3, calc(var(--p) * 7), 1); }
-html.zoom-on .step-2 { opacity: clamp(0.3, calc((var(--p) - 0.33) * 7), 1); }
-html.zoom-on .step-3 { opacity: clamp(0.3, calc((var(--p) - 0.66) * 7), 1); }
-html.zoom-on .step { transition: opacity 0.2s linear; }
+html.hero-on .hero-phone__img {
+  /* hand.webp har aegte alfakanal (baggrund fjernet) — ingen mask-image-fade noedvendig */
+  width: 100%; height: 100%; object-fit: fill;
+}
+html.hero-on .hero-phone .hero-layer__cap { display: none; }
+
+/* --- Overskrift + CTA: synlig fra start, forsvinder helt naar telefonen rejser sig
+   (etape 2/3) og kommer ikke tilbage igen i sekvensen. --copy-dim gaar kun én vej 0->1.
+   .copy-hidden saettes af js/main.js naar copyDim = 1, saa den usynlige CTA ikke
+   ligger og fanger museklik oven paa dashboard/telefon resten af sekvensen. --- */
+html.hero-on .hero-seq__copy {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 5;
+  padding: 5rem clamp(1.25rem, 5vw, 2.5rem) clamp(2rem, 7vh, 4rem);
+  background: linear-gradient(to top, var(--bg) 40%, rgba(11, 10, 13, 0.86) 66%, transparent);
+  opacity: calc(1 - var(--copy-dim, 0));
+}
+html.hero-on .hero-seq__copy.copy-hidden { pointer-events: none; }
+html.hero-on .hero-seq:focus-within .hero-seq__copy,
+.hero-seq:focus-within .hero-seq__copy { opacity: 1; pointer-events: auto; }
+
+@media (max-width: 640px) {
+  html.hero-on .hero-phone__device { --ph: 62lvh; }
+  html.hero-on .hero-phone {
+    align-items: end;
+    transform: translateY(calc(90% - 74% * var(--phone-up, 0) + 100% * var(--phone-down, 0)));
+  }
+}
+
+/* ---- Dashboard-mock (#layer-screen) ----
+   Naer-sort bund, ingen farveskaer. Indhold i egne kort (tynd kant, runde
+   hjoerner). cqw er relativ til .dash's egen bredde, saa maalene i kommentarer
+   (ca. Xpx) er regnet ved 1920px-bredde — samme markup skalerer korrekt ned
+   til mobil-fald-tilbagens ~360px bredde. */
+.dash {
+  container-type: inline-size;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 1.6cqw;
+  padding: 2.4cqw 2.8cqw;
+  border: 1px solid var(--line);
+  border-radius: 1.4cqw;
+  overflow: hidden;
+  text-align: left;
+  background: var(--bg);
+}
+
+/* -- topbjaelke -- */
+.dash__top { display: flex; align-items: flex-start; justify-content: space-between; }
+.dash__brand { display: flex; align-items: center; gap: 1cqw; }
+.dash__brand-ring {
+  flex: none; width: 2.6cqw; height: 2.6cqw; min-width: 20px; min-height: 20px;
+  border-radius: 999px; border: max(1.5px, 0.16cqw) solid var(--ink-dim);
+}
+.dash__brand-label {
+  font-family: var(--mono); font-size: 1.45cqw; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink-dim);
+}
+.dash__clock { text-align: right; line-height: 1.05; }
+.dash__clock b {
+  display: block; font-family: var(--mono); font-weight: 600;
+  font-size: 4.15cqw; color: var(--guld); /* ca. 80px @1920 */
+}
+.dash__clock span {
+  font-family: var(--mono); font-size: 1.3cqw; letter-spacing: 0.12em; color: var(--ink-dim);
+}
+
+/* -- krop: program-kort + billed-kort -- */
+.dash__body { display: grid; grid-template-columns: 63% 1fr; gap: 1.6cqw; min-height: 0; }
+.dash__card {
+  background: var(--bg-2); border: 1px solid var(--line); border-radius: 1.2cqw;
+  min-height: 0; overflow: hidden;
+}
+.dash__program { padding: 2cqw 2.2cqw; display: flex; flex-direction: column; min-height: 0; }
+.dash__eyebrow {
+  margin: 0 0 0.9cqw; font-family: var(--mono); font-size: 1.35cqw;
+  letter-spacing: 0.25em; text-transform: uppercase; color: var(--lilla);
+}
+.dash__title {
+  margin: 0 0 2cqw; font-family: var(--display); font-weight: 700;
+  font-size: 3.75cqw; /* ca. 72px @1920 */ text-transform: uppercase;
+  letter-spacing: 0.01em; color: var(--ink-dim);
+}
+.dash__groups {
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+  gap: 1.8cqw 3cqw; min-height: 0;
+}
+.dash__group { display: flex; gap: 1.2cqw; align-items: flex-start; min-width: 0; }
+.dash__gnum {
+  flex: none; width: 2cqw; height: 2cqw; min-width: 18px; min-height: 18px;
+  border-radius: 999px; display: grid; place-items: center;
+  font-family: var(--mono); font-weight: 700; font-size: 1.4cqw; color: #17130A;
+  background: var(--gc); margin-top: 0.15cqw;
+}
+.dash__group ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.55cqw; min-width: 0; }
+.dash__group li {
+  font-weight: 700; text-transform: uppercase; color: #fff;
+  font-size: 1.5cqw; /* ca. 28px @1920 */ line-height: 1.3;
+}
+
+/* -- billedkort: karrusel. Uden foto (ingen reference leveret) falder den
+   tilbage til en neutral moerk flade i paletten — aldrig et brudt billede-ikon. -- */
+.dash__media { padding: 1.2cqw; display: flex; flex-direction: column; gap: 1cqw; }
+.dash__photobox {
+  position: relative; flex: 1; min-height: 0; border-radius: 0.9cqw; overflow: hidden;
+  background: var(--bg-3);
+}
+.dash__photobox::before {
+  content: ""; position: absolute; inset: -12%;
+  background: var(--dash-photo, none) center / cover;
+  filter: blur(18px) brightness(0.55); transform: scale(1.08);
+}
+.dash__photobox__sharp {
+  position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%);
+  aspect-ratio: 16 / 9; width: 100%; max-height: 92%;
+  background: var(--dash-photo, none) center / cover;   /* usynlig naar intet foto er sat */
+}
+.dash__dots { display: flex; gap: 0.55cqw; justify-content: center; flex-wrap: wrap; flex: none; }
+.dash__dots i { width: 0.55cqw; height: 0.55cqw; min-width: 4px; min-height: 4px; border-radius: 999px; background: rgba(255, 255, 255, 0.28); }
+.dash__dots i.on { background: var(--guld); }
+
+/* -- eventbjaelke -- */
+.dash__event {
+  display: flex; align-items: center; gap: 1.8cqw;
+  background: var(--bg-2); border: 1px solid var(--line); border-radius: 1.2cqw;
+  padding: 1.6cqw 2cqw;
+}
+.dash__evdate {
+  flex: none; display: grid; justify-items: center; line-height: 1;
+  padding: 0.9cqw 1.7cqw; border-radius: 0.9cqw; color: #17130A;
+  background: linear-gradient(135deg, var(--guld), var(--magenta) 55%, var(--lilla));
+}
+.dash__evdate b { font-family: var(--mono); font-size: 3cqw; }
+.dash__evdate span { font-family: var(--mono); font-size: 1.3cqw; font-weight: 700; letter-spacing: 0.1em; }
+.dash__evtag {
+  flex: none; margin: 0; font-family: var(--mono); font-size: 1.15cqw; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; text-align: center; line-height: 1.4;
+  color: #17130A; background: var(--guld); padding: 0.7cqw 1.2cqw; border-radius: 0.7cqw;
+}
+.dash__evname {
+  margin: 0; min-width: 0; flex: 1; font-family: var(--display); font-weight: 700;
+  text-transform: uppercase; color: #fff; font-size: 2.5cqw;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.dash__evtime { flex: none; margin: 0; font-family: var(--mono); font-size: 1.5cqw; color: var(--ink-dim); }
+.dash__evcount {
+  flex: none; font-family: var(--mono); font-size: 1.5cqw; color: var(--guld);
+  padding: 0.85cqw 1.8cqw; border: 1px solid var(--line); border-radius: 999px;
+}
+
+/* -- patch over "WOD" i hand.webp, saa telefonen viser samme titel som
+   dashboardet (WOD_TITLE i js/main.js, ét sted, bruges begge steder).
+   Koordinater maalt i hand.webp's egne procenter, samme container som
+   billedet (.hero-phone__device) — foelger alle bevaegelser af sig selv. -- */
+.hero-phone__title {
+  position: absolute; left: 15%; top: 21.5%; width: 38%; height: 5.5%;
+  border-radius: 15%; background: var(--bg-2);
+  display: grid; place-items: center; container-type: inline-size;
+}
+.hero-phone__title span {
+  font-family: var(--sans); font-weight: 700; color: #fff; text-align: center;
+  font-size: 13cqw; line-height: 1; white-space: nowrap;
+}
+
+/* -- telefonens skaerm-glød (send-animation) -- */
+.hero-phone__glow {
+  position: absolute; left: 12%; top: 2%; width: 41%; height: 63%;
+  border-radius: 6% / 3.6%; pointer-events: none; mix-blend-mode: screen;
+  background: radial-gradient(60% 55% at 50% 38%, rgba(255, 255, 255, 0.9), rgba(242, 185, 65, 0.4) 45%, transparent 75%);
+  opacity: var(--send-glow, 0);
+}
+
+/* -- send-buen: telefon -> tv. Ren p-drevet, ingen egen timer, saa tilbage-
+   scroll bare koerer den samme kurve baglaens. Skjult uden hero-on/JS. -- */
+.hero-send { display: none; }
+html.hero-on .hero-send {
+  display: block; position: absolute; inset: 0; width: 100%; height: 100%;
+  overflow: visible; pointer-events: none; z-index: 6;
+  opacity: var(--send-opacity, 0);
+}
+.hero-send__path { fill: none; stroke: url(#send-grad); stroke-width: 3; stroke-linecap: round; filter: url(#send-glow); }
+.hero-send__dot { fill: #fff; filter: url(#send-glow); }
+html.hero-on .hero-scene__screen {
+  box-shadow: 0 0 calc(var(--send-flash, 0) * 70px) calc(var(--send-flash, 0) * 12px) rgba(202, 100, 220, calc(var(--send-flash, 0) * 0.9));
+}
 
 /* ---- Features-grid ---- */
 .features { padding: clamp(3rem, 8vw, 6rem) 0; }
@@ -202,32 +422,52 @@ html.zoom-on .step { transition: opacity 0.2s linear; }
 }
 .card h3 { color: var(--orange); }
 .card p { margin: 0; color: var(--ink-dim); }
+.lead { color: var(--ink-dim); font-size: 1.1em; max-width: 46ch; }
 
-/* ---- Telefon-sektion ---- */
+/* ---- Telefon-sektion: appens hjemmeskaerm (ren HTML/CSS, ingen billedfil) ---- */
 .phone-sec { padding: clamp(3rem, 8vw, 6rem) 0; }
 .phone-grid { display: grid; gap: clamp(2rem, 6vw, 4rem); align-items: center; }
+.phone-grid > * { min-width: 0; }
 @media (min-width: 760px) { .phone-grid { grid-template-columns: 0.8fr 1.2fr; } }
 .phone-media { display: flex; justify-content: center; }
 .phone {
-  width: min(240px, 62vw); aspect-ratio: 9 / 18; padding: 14px;
+  container-type: inline-size;   /* cqw herunder er relativt til DENNE boks — men dens EGEN padding/radius/gap kan ikke selv vaere cqw (cirkulaert), derfor faste enheder her */
+  width: min(240px, 62vw); aspect-ratio: 9 / 18; padding: 14px 14px 11px;
   border: 2px solid rgba(255, 255, 255, 0.18); border-radius: 34px;
-  background: #100E15; display: grid; gap: 0.6rem; align-content: start;
+  background: #100E15; overflow: hidden;
+  display: grid; grid-template-rows: auto auto 1fr auto; gap: 0.5rem;
 }
-.phone-board {
-  border: 1px solid var(--line); border-radius: 16px; padding: 0.9rem;
-  background: linear-gradient(160deg, #1a1622, var(--bg-2)); font-size: 0.85rem;
+.phone__top { margin: 0; text-align: center; font-weight: 700; color: #E8C9A0; font-size: 9.5cqw; }
+.phone__wod {
+  border: 1px solid var(--line); border-left: 3px solid var(--guld); border-radius: 2.2cqw;
+  padding: 4cqw 5cqw; background: linear-gradient(160deg, #1a1622, var(--bg-2));
 }
-.phone-board p { margin: 0.2em 0; }
-.phone-pill {
-  text-align: center; padding: 0.6rem; border-radius: 999px;
-  background: var(--viola); color: #fff; font-size: 0.85rem; font-weight: 600;
+.phone__label { margin: 0 0 2cqw; font-family: var(--mono); font-size: 5.2cqw; letter-spacing: 0.1em; text-transform: uppercase; color: var(--guld); }
+.phone__wodtitle { margin: 0; font-size: 8cqw; font-weight: 700; text-transform: uppercase; color: #fff; line-height: 1.15; }
+.phone__tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5cqw; min-height: 0; }
+.phone__tile {
+  border: 1px solid var(--line); border-radius: 2.2cqw; padding: 3.5cqw;
+  background: var(--bg-2); display: flex; flex-direction: column; justify-content: center; gap: 1cqw;
 }
-.phone-pill.ghost { background: transparent; border: 1px solid var(--line); color: var(--ink-dim); }
-.ticks { margin: 1.5rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.8rem; }
-.ticks li { padding-left: 1.8rem; position: relative; }
-.ticks li::before {
-  content: "✓"; position: absolute; left: 0; color: var(--magenta); font-weight: 700;
+.phone__tile--active { border-color: var(--guld); background: linear-gradient(160deg, rgba(242, 185, 65, 0.14), var(--bg-2)); }
+.phone__tile-emoji { font-size: 7.5cqw; line-height: 1; }
+.phone__tile-title { margin: 0; font-size: 6cqw; font-weight: 700; color: #fff; }
+.phone__tile-sub { margin: 0; font-size: 4.3cqw; line-height: 1.3; color: var(--ink-dim); }
+.phone__nav { display: flex; justify-content: space-between; font-size: 4cqw; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.03em; }
+.phone__nav span { flex: 1; text-align: center; padding-top: 2.5cqw; border-top: 2px solid var(--line); }
+.phone__nav .on { color: var(--guld); border-top-color: var(--guld); }
+
+/* -- tavle-funktionen: tre trin (hovedpunkt) + to underordnede punkter -- */
+.tavle-steps { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 1rem; }
+.tavle-steps li { display: flex; gap: 1rem; align-items: baseline; }
+.tavle-steps__num { flex: none; width: 1.6rem; font-size: 1.25rem; font-weight: 700; }
+.tavle-steps p { margin: 0; }
+.tavle-minor {
+  list-style: none; margin: 1.5rem 0 0; padding-top: 1rem; border-top: 1px solid var(--line);
+  display: grid; gap: 0.6rem; font-size: 0.85rem; color: var(--ink-dim);
 }
+.tavle-minor li { display: flex; gap: 0.6rem; align-items: baseline; }
+.tavle-minor strong { color: var(--ink); font-weight: 600; }
 
 /* ---- Positionering ---- */
 .position { padding: clamp(3rem, 8vw, 6rem) 0; }

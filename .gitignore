@@ -1,10 +1,18 @@
 # Verifikations-screenshots — ikke en del af sitet
 screenshots/
 
+# Reference-billeder til asset-arbejde — maa ALDRIG committes (brands + personer)
+billeder/
+assets/dashboard.PNG
+assets/admin panel.JPG
+assets/skærm på væggen.PNG
+assets/træningscenter.PNG
+
 # OS / editor
 .DS_Store
 Thumbs.db
 *.swp
+*.bak
 .vscode/
 .idea/
 
