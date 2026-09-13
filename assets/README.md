@@ -8,6 +8,7 @@ det med det samme.
 | `room.jpg` | `.hero-scene__photo`. Homografien i `js/main.js` er kalibreret mod denne fils naturlige mål (`PHOTO_W`/`PHOTO_H`) og tv-skærmens fire hjørner (`TV`) | Generisk hal, mørk/cinematisk, en tv-/skærmflade synligt på væggen der hvor `TV` peger. Ingen personer, logoer, brands eller tekst. |
 | `hand.webp` | `.hero-phone__img`. Ægte alfakanal (baggrund fjernet) — ingen mask-image. Skærmens placering i billedet er kalibreret mod `.hero-phone__glow`/`.hero-phone__title`s procentkoordinater i `css/style.css` | Hånd der holder en telefon, beskåret til indhold. Ingen genkendelige personer eller brands. Armens afskårne underkant skal altid ligge under viewportets bund — tjek i browseren, ikke kun i billedet, hvis filen skiftes. |
 | `fonts/oswald-700.woff2` + `fonts/OFL.txt` | Dashboardets og telefon-mockets overskrifter (`--display` i `css/style.css`) | Skrifttype, ikke foto. `OFL.txt` er licensteksten og skal ligge ved siden af — se "Fonte" nedenfor. |
+| `fonts/kalam-bold.woff2` + `fonts/kalam-OFL.txt` | Det haandskrevne program paa whiteboardet i `.hero-scene__board` (`index.html` / `en/index.html`) | Skrifttype, ikke foto. Subsettet til de tegn programmet bruger (Latin-1 + æøå). Licensfilen har eget navn, da den ligger ved siden af Oswalds `OFL.txt`. |
 
 Titlen der står både på dashboardet og på telefonen (patchen over "WOD" i
 `hand.webp`, samt app-mockets WOD-kort) kommer ét sted fra: `WOD_TITLE` i

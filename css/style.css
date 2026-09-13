@@ -10,6 +10,16 @@
   src: url("../assets/fonts/oswald-700.woff2") format("woff2");
 }
 
+/* Haandskrift til tavle-overlayet i hero-rummet (Kalam 700, OFL-licens,
+   selv-hostet — ingen Google Fonts-CDN). Kun de tegn programmet bruger. */
+@font-face {
+  font-family: "Kalam";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../assets/fonts/kalam-bold.woff2") format("woff2");
+}
+
 :root {
   --guld: #F2B941;   /* kun maerket, timer-ringen og primaer CTA */
   --orange: #F0A182;
@@ -140,11 +150,26 @@ a { color: var(--orange); }
 .hero-seq__stage { display: grid; gap: clamp(2rem, 6vw, 4rem); padding: clamp(2.5rem, 7vw, 5rem) 0; }
 .hero-scene { display: contents; }   /* boernene bliver direkte stage-grid-items -> kan ordnes */
 .hero-scene__photo-fig { order: 1; margin: 0; text-align: center; }
-.hero-scene__photo {
-  display: block; width: min(920px, 92vw); height: auto; margin-inline: auto;
-  aspect-ratio: 16 / 9; object-fit: cover;
+/* .hero-scene__photo-box holder foto + haandskrift-overlay i samme boks, saa
+   de altid faar praecis samme size/crop (object-fit sidder paa boksen, ikke
+   paa de enkelte lag) — se note ved .hero-scene__board. */
+.hero-scene__photo-box {
+  position: relative; display: block; width: min(920px, 92vw); margin-inline: auto;
+  aspect-ratio: 16 / 9; overflow: hidden;
   border-radius: 16px; border: 1px solid var(--line);
   background: linear-gradient(160deg, var(--bg-3), var(--bg));
+}
+.hero-scene__photo,
+.hero-scene__board { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.hero-scene__photo { object-fit: cover; }
+/* Haandskrevet program paa tavlen i fotoet — samme program som dashboardet,
+   bare skrevet i haanden. preserveAspectRatio="xMidYMid slice" paa selve
+   SVG'en (ikke via CSS) giver den samme beskaering som .hero-scene__photos
+   object-fit: cover/fill, saa den foelger tavlen praecist i begge tilstande. */
+.hero-scene__board { pointer-events: none; }
+.hero-scene__board text,
+.hero-scene__board tspan {
+  font-family: "Kalam", cursive; font-weight: 700; fill: #131f36;
 }
 .hero-phone { order: 2; display: grid; justify-items: center; gap: 1rem; }
 .hero-phone__device {
@@ -194,11 +219,19 @@ html.hero-on .hero-scene__photo-fig {
   position: absolute; inset: 0; margin: 0; display: block;
   background: var(--bg); z-index: 1;      /* sort bund naar fotoet fader */
 }
+html.hero-on .hero-scene__photo-box {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  border: 0; border-radius: 0; background: none; overflow: visible;
+}
 html.hero-on .hero-scene__photo {
-  width: 100%; height: 100%; display: block;
   border: 0; border-radius: 0; object-fit: fill;
   opacity: calc(1 - var(--veil, 0));
 }
+/* Haandskrift-overlayet skal blegne praecis som fotoet (samme --veil), og
+   arver .hero-scene's egen translate+scale ved bare at vaere i samme
+   2752x1536-pixelrum — ingen egen homografi noedvendig (modsat #layer-screen,
+   der skal foldes ud til en flad rude; overlayet er en fast del af fotoet). */
+html.hero-on .hero-scene__board { opacity: calc(1 - var(--veil, 0)); }
 html.hero-on .hero-scene__screen {
   position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; display: block;
   transform-origin: 0 0; z-index: 2;
