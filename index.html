@@ -54,22 +54,27 @@
                      Koordinater er kalibreret mod den lille tavle paa vaeggen
                      i room.jpg (venstre for tv'et), IKKE mod TV-quaden. -->
                 <svg class="hero-scene__board" viewBox="0 0 2752 1536" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-                  <g transform="translate(383 517) rotate(4.3) skewX(-1)">
-                    <text>
-                      <tspan x="2" y="13" font-size="11" fill-opacity="0.9">STYRKE &amp; KERNE</tspan>
-                      <tspan x="2" dy="22" font-size="8" fill-opacity="0.82">1) Squat 5x5</tspan>
-                      <tspan x="11" dy="14" font-size="8" fill-opacity="0.88">Bænkpres 4x8</tspan>
-                      <tspan x="11" dy="14" font-size="8" fill-opacity="0.76">Hip thrust 3x10</tspan>
-                      <tspan x="2" dy="22" font-size="8" fill-opacity="0.86">2) Markløft 5x3</tspan>
-                      <tspan x="11" dy="14" font-size="8" fill-opacity="0.8">Kabel pull-down 3x12</tspan>
-                      <tspan x="11" dy="14" font-size="8" fill-opacity="0.9">Facepull 3x15</tspan>
-                      <tspan x="2" dy="22" font-size="8" fill-opacity="0.84">3) Bulgarian split squat 3x10</tspan>
-                      <tspan x="11" dy="14" font-size="8" fill-opacity="0.76">Curl håndvægt 3x12</tspan>
-                      <tspan x="11" dy="14" font-size="8" fill-opacity="0.9">Triceps kabel 3x12</tspan>
-                      <tspan x="2" dy="22" font-size="8" fill-opacity="0.82">4) Skrå mave 3x15</tspan>
-                      <tspan x="11" dy="14" font-size="8" fill-opacity="0.88">Planke 3x45 sek</tspan>
-                      <tspan x="11" dy="14" font-size="8" fill-opacity="0.8">V-ups 3x15</tspan>
-                    </text>
+                  <!-- Tavlens hvide flade i room.jpg har hjoernerne (381.8 505.7)
+                       (536.8 521.9) (540.4 787.5) (386.6 793.2). Den staar i
+                       perspektiv: oeverste kant haelder +6 grader, nederste -2,
+                       mens sidekanterne staar naesten lodret. Derfor har hver
+                       linje sin EGEN rotation, regnet i tavlens plan — ét
+                       faelles rotate() ville vippe hele lodret-aksen og lade
+                       linjerne vandre ud over venstre kant paa vej ned. -->
+                  <g font-size="8.8">
+                    <text x="389.6" y="524.2" transform="rotate(5.47 389.6 524.2)" font-size="12" fill-opacity="0.9">STYRKE &amp; KERNE</text>
+                    <text x="390.0" y="548.1" transform="rotate(4.80 390.0 548.1)" fill-opacity="0.82">1) Squat 5x5</text>
+                    <text x="399.9" y="564.4" transform="rotate(4.36 399.9 564.4)" fill-opacity="0.88">Bænkpres 4x8</text>
+                    <text x="400.2" y="579.8" transform="rotate(3.93 400.2 579.8)" fill-opacity="0.76">Hip thrust 3x10</text>
+                    <text x="390.9" y="603.0" transform="rotate(3.26 390.9 603.0)" fill-opacity="0.86">2) Markløft 5x3</text>
+                    <text x="400.8" y="619.0" transform="rotate(2.82 400.8 619.0)" fill-opacity="0.8">Kabel pull-down 3x12</text>
+                    <text x="401.1" y="634.5" transform="rotate(2.38 401.1 634.5)" fill-opacity="0.9">Facepull 3x15</text>
+                    <text x="391.9" y="657.9" transform="rotate(1.71 391.9 657.9)" fill-opacity="0.84">3) Bulgarian split squat 3x10</text>
+                    <text x="401.7" y="673.6" transform="rotate(1.27 401.7 673.6)" fill-opacity="0.76">Curl håndvægt 3x12</text>
+                    <text x="401.9" y="689.0" transform="rotate(0.83 401.9 689.0)" fill-opacity="0.9">Triceps kabel 3x12</text>
+                    <text x="392.8" y="712.6" transform="rotate(0.16 392.8 712.6)" fill-opacity="0.82">4) Skrå mave 3x15</text>
+                    <text x="402.6" y="728.0" transform="rotate(-0.28 402.6 728.0)" fill-opacity="0.88">Planke 3x45 sek</text>
+                    <text x="402.8" y="743.4" transform="rotate(-0.72 402.8 743.4)" fill-opacity="0.8">V-ups 3x15</text>
                   </g>
                 </svg>
               </div>

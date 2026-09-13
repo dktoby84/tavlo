@@ -65,7 +65,9 @@ landing). Ét fremdriftstal (`p`, glidet af `frame()`'s inerti mod
    Samtidig forsvinder `#hero-copy` (`copyDim`), altid færdig før telefonen
    når teksten.
 3. **Send-buen** (`updateSendArc`, drevet af `sendDraw`/`sendEnvelope`/
-   `sendFlash`/`sendPulse`) tegner fra telefonskærmen til tv'et.
+   `sendFlash`/`sendPulse`) tegner fra telefonskærmen til tv'et. Undervejs
+   tømmes whiteboardet i fotoet (`boardInk`): det håndskrevne program forlader
+   tavlen og er væk, før dashboardet står på tv'et.
 4. **Dashboardet** (`#layer-screen`) fader ind på tv'et (`tvOn`) — ingen zoom
    endnu.
 5. **Telefonen sænkes** (`phoneDown`), kameraet zoomer ind mod tv'et
@@ -86,6 +88,11 @@ landing). Ét fremdriftstal (`p`, glidet af `frame()`'s inerti mod
   mens det der skal kunne læses/nås holder sig inden for det garanterede
   (svh-baserede) område.
 - Titlen på både dashboardet og telefonen kommer fra ÉT sted, `WOD_TITLE`.
+- Det håndskrevne program på whiteboardet (`.hero-scene__board`) er et
+  SVG-overlay i fotoets eget pixelrum — ikke brændt ind i `room.jpg`. Tavlen
+  står i perspektiv, så hver linje har sin egen rotation, regnet ud fra
+  tavlens fire hjørner i fotoet. Skiftes `room.jpg`, skal de hjørner måles
+  om, ellers sidder skriften ved siden af tavlen.
 - Fald-tilbage (`prefers-reduced-motion` / uden JS): lagene stables lodret
   med billedtekst, ingen animation. `html.hero-on` (sat af `js/main.js`, se
   betingelsen øverst i filen) lægger den sticky, scroll-drevne version ovenpå.

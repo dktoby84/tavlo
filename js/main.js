@@ -4,7 +4,7 @@
 
 // Opdatér ved hver aendring i dette script — vises i ?debug-boksen, saa man
 // kan se om browseren har den seneste version (cache, deploy).
-const BUILD = '2026-09-11T13:45Z';
+const BUILD = '2026-09-13T19:40Z';
 
 // Titlen staar ÉT sted og bruges baade af dashboardet og patchen over "WOD"
 // i hand.webp, saa de aldrig kan komme til at vise to forskellige ting.
@@ -198,6 +198,7 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
   //   0.05..0.22 : 2 telefonen stiger op (hand.webp)
   //   0.05..0.095: 3 headline+CTA forsvinder helt (samtidig med 2, faerdig foer haandens boks naar teksten ved ~0.11)
   //   0.22..0.27 : B1 send-buen tegnes telefon -> tv, glød paa telefonskaermen
+  //   0.23..0.33 : B1b whiteboardet toemmes (boardInk) — programmet forlader tavlen
   //   0.27..0.285: B2 buens punkt naar tv'et, kort kant-glød
   //   0.285..0.30: B3 buen fader ud
   //   0.30..0.45 : 4 dashboard fader ind paa tv'et (ingen zoom, telefon stadig i billedet)
@@ -342,6 +343,11 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
     const sendPulse = sendEnvelope * (0.5 + 0.5 * Math.sin((p - 0.22) * Math.PI * 2 * (3 / 0.08))) * 0.65;
     const sendActive = p > 0.205 && p < 0.31;
 
+    // Tavlen toemmes mens buen er undervejs: programmet forlader whiteboardet
+    // og er vaek foer dashboardet staar helt paa tv'et (tvOn 0.30-0.45). Ren
+    // p-styret som resten, saa den skriver sig selv tilbage ved tilbage-scroll.
+    const boardInk = 1 - local(p, 0.23, 0.33);
+
     stage.style.setProperty('--phone-up', phoneUp.toFixed(4));
     stage.style.setProperty('--phone-down', phoneDown.toFixed(4));
     stage.style.setProperty('--tv-on', tvOn.toFixed(4));
@@ -350,6 +356,7 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
     stage.style.setProperty('--send-opacity', sendEnvelope.toFixed(4));
     stage.style.setProperty('--send-glow', sendPulse.toFixed(4));
     stage.style.setProperty('--send-flash', sendFlash.toFixed(4));
+    stage.style.setProperty('--board-ink', boardInk.toFixed(4));
     if (copyEl) copyEl.classList.toggle('copy-hidden', copyDim >= 1);
     const g = layoutScene(pZoom, pDetach);
     updateSendArc(sendDraw, sendActive, g);
@@ -379,6 +386,7 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
         `p ${p.toFixed(3)}  viewport ${document.documentElement.clientWidth}x${stage.clientHeight}  safeVh ${g.safeVh.toFixed(0)}  portrait ${g.portrait}\n` +
         `phoneUp ${phoneUp.toFixed(2)} phoneDown ${phoneDown.toFixed(2)} tvOn ${tvOn.toFixed(2)} veil ${veil.toFixed(2)} copyDim ${copyDim.toFixed(2)}\n` +
         `sendDraw ${sendDraw.toFixed(2)} sendOpacity ${sendEnvelope.toFixed(2)} sendFlash ${sendFlash.toFixed(2)} sendGlow ${sendPulse.toFixed(2)}\n` +
+        `boardInk ${boardInk.toFixed(2)}\n` +
         `pZoom ${pZoom.toFixed(2)} pDetach ${pDetach.toFixed(2)} restScale ${g.restScale.toFixed(4)} zoomMax ${g.zoomMax.toFixed(4)} scale ${g.s.toFixed(4)}\n` +
         `fotoOpacity ${(1 - veil).toFixed(2)}  header->dashboard ${hdrToDashPx.toFixed(0)}px  dashboard->overskrift ${Number.isFinite(gapPx) ? gapPx.toFixed(0) : '?'}px\n` +
         `tx ${g.tx.toFixed(0)} ty ${g.ty.toFixed(0)}  TV(natural) TL${TV[0]} TR${TV[1]} BR${TV[2]} BL${TV[3]}`;

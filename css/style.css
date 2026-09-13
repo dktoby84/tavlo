@@ -167,10 +167,7 @@ a { color: var(--orange); }
    SVG'en (ikke via CSS) giver den samme beskaering som .hero-scene__photos
    object-fit: cover/fill, saa den foelger tavlen praecist i begge tilstande. */
 .hero-scene__board { pointer-events: none; }
-.hero-scene__board text,
-.hero-scene__board tspan {
-  font-family: "Kalam", cursive; font-weight: 700; fill: #131f36;
-}
+.hero-scene__board text { font-family: "Kalam", cursive; font-weight: 700; fill: #131f36; }
 .hero-phone { order: 2; display: grid; justify-items: center; gap: 1rem; }
 .hero-phone__device {
   position: relative; width: min(320px, 66vw); aspect-ratio: 800 / 1189;
@@ -227,11 +224,13 @@ html.hero-on .hero-scene__photo {
   border: 0; border-radius: 0; object-fit: fill;
   opacity: calc(1 - var(--veil, 0));
 }
-/* Haandskrift-overlayet skal blegne praecis som fotoet (samme --veil), og
-   arver .hero-scene's egen translate+scale ved bare at vaere i samme
-   2752x1536-pixelrum — ingen egen homografi noedvendig (modsat #layer-screen,
-   der skal foldes ud til en flad rude; overlayet er en fast del af fotoet). */
-html.hero-on .hero-scene__board { opacity: calc(1 - var(--veil, 0)); }
+/* Haandskrift-overlayet arver .hero-scene's egen translate+scale ved bare at
+   vaere i samme 2752x1536-pixelrum — ingen egen homografi noedvendig (modsat
+   #layer-screen, der skal foldes ud til en flad rude; overlayet er en fast del
+   af fotoet). To ting tager det med: --veil (fotoet fader til sort som resten
+   af rummet) og --board-ink (tavlen toemmes mens programmet sendes til
+   skaermen). Uden JS staar begge paa "fuldt blaek". */
+html.hero-on .hero-scene__board { opacity: calc((1 - var(--veil, 0)) * var(--board-ink, 1)); }
 html.hero-on .hero-scene__screen {
   position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; display: block;
   transform-origin: 0 0; z-index: 2;
