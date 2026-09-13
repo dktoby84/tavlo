@@ -4,7 +4,7 @@
 
 // Opdatér ved hver aendring i dette script — vises i ?debug-boksen, saa man
 // kan se om browseren har den seneste version (cache, deploy).
-const BUILD = '2026-09-11T13:45Z';
+const BUILD = '2026-09-13T00:00Z';
 
 // Titlen staar ÉT sted og bruges baade af dashboardet og patchen over "WOD"
 // i hand.webp, saa de aldrig kan komme til at vise to forskellige ting.
@@ -327,20 +327,20 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
 
     const p = shown;
     // etaper (p-intervaller — se kommentaren ovenfor):
-    const phoneUp = easeInOutCubic(local(p, 0.05, 0.22));
-    const phoneDown = easeInOutCubic(local(p, 0.52, 0.64));
-    const tvOn = local(p, 0.30, 0.45);
-    const pZoom = local(p, 0.66, 0.80);
-    const veil = local(p, 0.68, 0.83);
-    const pDetach = local(p, 0.85, 0.975);      // starter foerst naar veil naar 0.9 ved p~0.815 — se kommentar ovenfor
-    const copyDim = local(p, 0.05, 0.095);         // én vej: forsvinder, kommer ikke tilbage — faerdig foer haandens boks naar teksten (~0.11)
+    const phoneUp = easeInOutCubic(local(p, 0.03, 0.17));
+    const phoneDown = easeInOutCubic(local(p, 0.35, 0.47));
+    const tvOn = local(p, 0.24, 0.36);
+    const pZoom = local(p, 0.47, 0.66);
+    const veil = local(p, 0.50, 0.70);
+    const pDetach = local(p, 0.70, 0.96);      // starter foerst naar veil naar 0.9 ved p~0.815 — se kommentar ovenfor
+    const copyDim = local(p, 0.03, 0.08);         // én vej: forsvinder, kommer ikke tilbage — faerdig foer haandens boks naar teksten (~0.11)
 
     // send-buen: draw 0.22-0.27, kort ankomst-flash 0.27-0.285, fade ud 0.285-0.30
-    const sendDraw = easeInOutCubic(local(p, 0.22, 0.27));
-    const sendEnvelope = clamp01(Math.min(local(p, 0.22, 0.235), 1 - local(p, 0.285, 0.30)));
-    const sendFlash = clamp01(1 - local(p, 0.27, 0.285)) * clamp01(local(p, 0.265, 0.27));
-    const sendPulse = sendEnvelope * (0.5 + 0.5 * Math.sin((p - 0.22) * Math.PI * 2 * (3 / 0.08))) * 0.65;
-    const sendActive = p > 0.205 && p < 0.31;
+    const sendDraw = easeInOutCubic(local(p, 0.17, 0.21));
+    const sendEnvelope = clamp01(Math.min(local(p, 0.17, 0.182), 1 - local(p, 0.225, 0.24)));
+    const sendFlash = clamp01(1 - local(p, 0.21, 0.225)) * clamp01(local(p, 0.206, 0.21));
+    const sendPulse = sendEnvelope * (0.5 + 0.5 * Math.sin((p - 0.17) * Math.PI * 2 * (3 / 0.07))) * 0.65;
+    const sendActive = p > 0.155 && p < 0.25;
 
     stage.style.setProperty('--phone-up', phoneUp.toFixed(4));
     stage.style.setProperty('--phone-down', phoneDown.toFixed(4));
@@ -356,17 +356,15 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
 
     if (dbg) {
       const name =
-        p < 0.05 ? '1 — hvile' :
-        p < 0.22 ? '2/3 — telefon op, tekst forsvinder' :
-        p < 0.27 ? 'B1 — send-bue tegnes' :
-        p < 0.285 ? 'B2 — ankomst-flash' :
-        p < 0.30 ? 'B3 — bue fader ud' :
-        p < 0.45 ? '4 — dashboard faeder ind' :
-        p < 0.52 ? 'hold' :
-        p < 0.64 ? '5a — telefon ned' :
-        p < 0.66 ? 'hold' :
-        p < 0.85 ? '5b — kamera zoomer, foto->sort' :
-        p < 0.975 ? '5c — dashboard folder ud' : '6 — hold / landing';
+        p < 0.03 ? '1 — hvile' :
+        p < 0.17 ? '2/3 — telefon op, tekst forsvinder' :
+        p < 0.21 ? 'B1 — send-bue tegnes' :
+        p < 0.225 ? 'B2 — ankomst-flash' :
+        p < 0.24 ? 'B3 — bue fader ud' :
+        p < 0.35 ? '4 — dashboard faeder ind' :
+        p < 0.47 ? '5a — telefon ned' :
+        p < 0.70 ? '5b — kamera zoomer, foto->sort' :
+        p < 0.96 ? '5c — dashboard folder ud' : '6 — hold / landing';
       // afstand fra dashboardets underkant (flad-rekt bund) til naeste overskrift,
       // og fra headerens underkant til dashboardets overkant
       const stageRect = stage.getBoundingClientRect();

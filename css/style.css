@@ -166,8 +166,8 @@ a { color: var(--orange); }
 .dash { width: min(1040px, 92vw); }
 
 /* ============ html.hero-on: den scroll-drevne version ============ */
-html.hero-on .hero-seq__track { height: 520svh; }
-@media (max-width: 640px) { html.hero-on .hero-seq__track { height: 470svh; } }
+html.hero-on .hero-seq__track { height: 340svh; }
+@media (max-width: 640px) { html.hero-on .hero-seq__track { height: 300svh; } }
 
 /* --hdr-h saettes af js/main.js (headerens maalte hoejde) — stagen skal sidde
    LIGE under headeren, ellers begge sticky-elementer om at sidde paa y=0 og
