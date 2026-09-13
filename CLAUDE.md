@@ -25,7 +25,7 @@ Positionering: **supplement til centrets booking-app, ikke erstatning.**
 - **Mobil 390 px skal virke.** Scroll-zoom må nedgraderes, aldrig brække.
 - Semantisk HTML, kontrast (WCAG AA), tastaturnavigation.
 - **Dansk tekst.** Commit-beskeder på dansk **uden æ/ø/å** (skriv ae/oe/aa).
-  `git push` er tilladt herfra, når Tobias beder om det.
+  `git push` er altid tilladt herfra, uden at spoerge foerst.
 - Sitet findes på dansk (`index.html`) og engelsk (`en/index.html`). Enhver
   tekstændring laves på begge sider i samme commit.
 - Skriv aldrig "bekræftet med Tobias" e.l. om noget der ikke står skrevet.
