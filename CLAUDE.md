@@ -93,9 +93,15 @@ inerti mod `trackProgress()`) styrer alt — CSS-variablerne og hjælpefunktione
    skal smide den ud, og skærmen er et supplement. Bagefter fader
    `#hero-note` ind (`note`) — den ene linje der siger hvorfor: man slipper
    for at skrive tavlen om til hvert program i løbet af dagen.
-   Noten placeres af `placeNote()` ud fra hvor tavlen og tv'et FAKTISK ligger
-   på skærmen (til højre for tavlen, under tv'et); faste procenter rammer kun
-   én skærmbredde.
+   Noten placeres af `placeNote()` ud fra hvor tavlen, tv'et og telefonen
+   FAKTISK ligger på skærmen. Der er ikke ét frit felt der virker overalt:
+   på mobil er der ~150 px over telefonen og ~20 px ved siden af den, på en
+   laptop (1366×768) er det omvendt — ~55 px over og ~490 px ved siden.
+   Derfor prøver den kandidater i rækkefølge (båndet over telefonen, så
+   væggen ved siden af den) og tager den første der kan rumme noten. Ingen
+   breakpoints. Ændrer du notens tekst eller størrelse, så kør sweep'et over
+   skærmstørrelser igen — 390 og 1920 går tilfældigvis fri, mens alt derimellem
+   fejlede første gang.
 4. **Dashboardet** (`#layer-screen`) fader ind på tv'et (`tvOn`) — ingen zoom
    endnu.
 5. **Telefonen sænkes** (`phoneDown`), kameraet zoomer ind mod tv'et

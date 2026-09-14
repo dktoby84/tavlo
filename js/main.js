@@ -4,7 +4,7 @@
 
 // Opdatér ved hver aendring i dette script — vises i ?debug-boksen, saa man
 // kan se om browseren har den seneste version (cache, deploy).
-const BUILD = '2026-09-14T13:10Z';
+const BUILD = '2026-09-14T14:45Z';
 
 // Titlen staar ÉT sted og bruges baade af dashboardet og patchen over "WOD"
 // i hand.webp, saa de aldrig kan komme til at vise to forskellige ting.
@@ -139,6 +139,9 @@ const BOARD_INK_LEFT = 0.3;
 // Luft mellem tavle/tv og noten naar den placeres (se placeNote).
 const NOTE_GAP_PX = 16;
 const NOTE_MAX_PX = 460;
+// Under denne bredde er noten ikke en note laengere, men en strimmel paa to
+// tegn pr. linje — saa vaelges en anden placering (se placeNote).
+const NOTE_MIN_PX = 220;
 
 const scene = document.querySelector('[data-hero-scene]');
 const screenEl = document.getElementById('layer-screen');
@@ -150,6 +153,7 @@ const sendGlyphs = [...document.querySelectorAll('[data-send-glyph]')];
 const noteEl = document.getElementById('hero-note');
 const sendGrad = document.querySelector('[data-send-grad]');
 const phoneGlow = document.querySelector('[data-phone-glow]');
+const phoneDevice = document.querySelector('.hero-phone__device');
 
 // Headeren er ogsaa position: sticky; top: 0 — uden dette kaemper de om y=0, og
 // headeren daekker toppen af scenen (tv'et rammer headeren) saa snart man scroller.
@@ -373,17 +377,55 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
     });
   }
 
-  // Noten staar i det frie felt: til hoejre for tavlen, under tv'et. De to
-  // ligger vidt forskellige steder paa skaermen alt efter bredde (paa 1920
-  // ses hele fotoet, paa 390 er det beskaaret), saa placeringen regnes ud af
-  // hvor de FAKTISK ligger — faste procenter rammer kun én bredde.
-  function placeNote(g) {
-    if (!noteEl) return;
+  // Noten skal staa i et frit felt — og hvor det er, afhaenger helt af
+  // skaermen. MAALT ved at=0.58:
+  //   390x844  baand over telefonen 150px, plads ved siden  19px
+  //   1366x768 baand over telefonen  55px, plads ved siden 487px
+  // Paa mobil er der god plads OVER telefonen og ingen ved siden; paa laptops
+  // er det omvendt, fordi telefonen er 76% af skaermhoejden og tv'et sidder
+  // lige over den. Derfor to kandidater, og den foerste der faktisk kan rumme
+  // noten vinder — ingen breakpoints at ramme forkert.
+  function placeNote(g, visible) {
+    if (!noteEl || !visible) return;   // ingen layout-laesning naar den er usynlig
     const vw = document.documentElement.clientWidth;
-    const left = Math.round(g.tx + BOARD_RIGHT * g.s) + NOTE_GAP_PX;
-    noteEl.style.left = left + 'px';
-    noteEl.style.top = (Math.round(g.ty + TV_BOTTOM * g.s) + NOTE_GAP_PX) + 'px';
-    noteEl.style.width = Math.max(0, Math.min(vw - left - NOTE_GAP_PX, NOTE_MAX_PX)) + 'px';
+    const stageTop = stage.getBoundingClientRect().top;
+    const phone = phoneDevice ? phoneDevice.getBoundingClientRect() : null;
+    // Telefonens kanter laeses fra DOM'et, ikke regnet ud af CSS-formlen, saa
+    // de foelger med hvis --phone-up/translateY nogensinde aendres.
+    const phoneTop = phone ? phone.top - stageTop : Infinity;
+
+    const setBox = (left) => {
+      noteEl.style.left = Math.round(left) + 'px';
+      noteEl.style.width = Math.max(0, Math.min(vw - left - NOTE_GAP_PX, NOTE_MAX_PX)) + 'px';
+      return noteEl.offsetHeight;      // laeses FOERST naar bredden er sat
+    };
+
+    // 1) Baandet mellem tv'ets underkant og telefonens overkant, til hoejre
+    //    for tavlen. Bruges naar den kan vaere der (mobil, tablet).
+    const bandTop = g.ty + TV_BOTTOM * g.s + NOTE_GAP_PX;
+    const bandBottom = phoneTop - NOTE_GAP_PX;
+    const bandLeft = g.tx + BOARD_RIGHT * g.s + NOTE_GAP_PX;
+    const hBand = setBox(bandLeft);
+    if (bandBottom - bandTop >= hBand) {
+      noteEl.style.top = Math.round((bandTop + bandBottom - hBand) / 2) + 'px';
+      return;
+    }
+
+    // 2) Ellers ved siden af telefonen, midt ud for den. Paa de skaerme hvor
+    //    baandet er for lavt, staar der til gengaeld 300-900px tom vaeg her.
+    const sideLeft = (phone ? phone.right : vw / 2) + NOTE_GAP_PX;
+    if (vw - sideLeft - NOTE_GAP_PX >= NOTE_MIN_PX) {
+      const hSide = setBox(sideLeft);
+      const phoneMid = phoneTop + (phone ? phone.height / 2 : 0);
+      noteEl.style.top = Math.round(phoneMid - hSide / 2) + 'px';
+      return;
+    }
+
+    // 3) Hverken over eller ved siden af (meget lav OG smal skaerm, fx
+    //    360x640: baand 74px, plads ved siden 14px). Saa hellere en laesbar
+    //    note der roerer telefonens overkant end en ulaeselig strimmel.
+    setBox(bandLeft);
+    noteEl.style.top = Math.round(bandTop) + 'px';
   }
 
   // ?at=0.3 laaser sekvensen paa en fast vaerdi (til verifikation uden scroll).
@@ -439,7 +481,7 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
     stage.style.setProperty('--note', note.toFixed(4));
     if (copyEl) copyEl.classList.toggle('copy-hidden', copyDim >= 1);
     const g = layoutScene(pZoom, pDetach);
-    placeNote(g);
+    placeNote(g, note > 0);
     updateSendArc(sendDraw, sendActive, g);
 
     if (dbg) {
