@@ -42,7 +42,7 @@ Positionering: **supplement til centrets booking-app, ikke erstatning.**
 - "Skriv som du plejer. Tavlo sætter det op."
 - "Skriv som du plejer. Tavlo sætter programmet op på skærmen." (hero-lead)
 - "Dagens program. Hele salen. Under et minut."
-- "Tavlen skal ikke skrives om flere gange om dagen." (noten i hero-sekvensen)
+- "Skift programmet fra mobilen — også fra ferien." (noten i hero-sekvensen)
 
 **Udgået:** "Fotografér tavlen. Så står den på skærmen." — "den" lød som om
 det var selve tavlen (et foto af den) der kom på skærmen, ikke programmet sat
@@ -74,8 +74,8 @@ landing). Ét fremdriftstal (`p`, glidet af `frame()`'s inerti mod
    tømmes whiteboardet i fotoet (`boardInk`): det håndskrevne program forlader
    tavlen og er væk, før dashboardet står på tv'et. Samtidig fader `#hero-note`
    ind (`note`) i det frie felt mellem tv'ets underkant og telefonens overkant
-   — den ene linje der siger hvorfor: tavlen skal ikke skrives om flere gange
-   om dagen.
+   — den ene linje der siger hvorfor: programmet skiftes fra mobilen, også
+   når man ikke er i salen.
 4. **Dashboardet** (`#layer-screen`) fader ind på tv'et (`tvOn`) — ingen zoom
    endnu.
 5. **Telefonen sænkes** (`phoneDown`), kameraet zoomer ind mod tv'et
