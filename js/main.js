@@ -4,7 +4,7 @@
 
 // Opdatér ved hver aendring i dette script — vises i ?debug-boksen, saa man
 // kan se om browseren har den seneste version (cache, deploy).
-const BUILD = '2026-09-14T12:30Z';
+const BUILD = '2026-09-14T13:10Z';
 
 // Titlen staar ÉT sted og bruges baade af dashboardet og patchen over "WOD"
 // i hand.webp, saa de aldrig kan komme til at vise to forskellige ting.
@@ -127,6 +127,15 @@ const WIDE_CY = (Math.min(...TV.map((p) => p[1])) + Math.max(...BOARD.map((p) =>
 // Bogstavernes indbyrdes forskydning i send-buen: hvert bogstav faar sit eget
 // vindue af sendDraw, saa de letter fra tavlen ét ad gangen i stedet for samlet.
 const GLYPH_GAP = 0.08;
+// Hvor meget blaek der bliver staaende paa tavlen naar programmet er sendt.
+// IKKE 0: skaermen er et SUPPLEMENT til tavlen, ikke en erstatning (se
+// CLAUDE.md) — en helt tom tavle siger "smid den ud". Den blegner i stedet,
+// saa det laeses som "en kopi er paa skaermen nu".
+// 0.3 er maalt, ikke gaettet: blaekkets kontrast mod tavlefladen falder til
+// 54% af fuld styrke (0.5 gav kun 67% og saa naesten uroert). Skriften er
+// stadig laesbar. Aendres tallet, saa maal kontrasten igen i stedet for at
+// stole paa opacity-vaerdien — blaekket er ikke sort, saa de foelges ikke ad.
+const BOARD_INK_LEFT = 0.3;
 // Luft mellem tavle/tv og noten naar den placeres (se placeNote).
 const NOTE_GAP_PX = 16;
 const NOTE_MAX_PX = 460;
@@ -228,7 +237,7 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
   //                (GLYPH_GAP forskyder dem, saa flere er i luften ad gangen).
   //                Vinduet er bevidst bredt — det er selve pointen man skal naa
   //                at se, og ved det halve foeltes det som et glimt.
-  //   0.21..0.45 : B1b whiteboardet toemmes (boardInk) — tomt naar bogstaverne lander
+  //   0.21..0.45 : B1b tavlen blegner (boardInk) til BOARD_INK_LEFT — ikke tom
   //   0.44..0.455: B2 bogstaverne naar tv'et, kort kant-glød
   //   0.455..0.47: B3 buen fader ud
   //   0.44..0.58 : 4 dashboard fader ind paa tv'et (ingen zoom, telefon stadig i billedet)
@@ -409,10 +418,10 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
     const sendPulse = sendEnvelope * (0.5 + 0.5 * Math.sin((p - 0.20) * Math.PI * 2 * (3 / 0.24))) * 0.65;
     const sendActive = p > 0.185 && p < 0.48;
 
-    // Tavlen toemmes mens buen er undervejs: programmet forlader whiteboardet
-    // og er vaek foer dashboardet staar helt paa tv'et (tvOn 0.30-0.45). Ren
-    // p-styret som resten, saa den skriver sig selv tilbage ved tilbage-scroll.
-    const boardInk = 1 - local(p, 0.21, 0.45);
+    // Tavlen blegner mens buen er undervejs — ned til BOARD_INK_LEFT, ikke til
+    // nul. Ren p-styret som resten, saa den skriver sig selv helt tilbage ved
+    // tilbage-scroll.
+    const boardInk = 1 - (1 - BOARD_INK_LEFT) * local(p, 0.21, 0.45);
 
     // Noten: fader ind mens buen er undervejs og tavlen toemmes, holder mens
     // dashboardet kommer paa tv'et, og er vaek foer telefonen saenkes (0.52).

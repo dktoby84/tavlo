@@ -232,8 +232,8 @@ html.hero-on .hero-scene__photo {
    vaere i samme 2752x1536-pixelrum — ingen egen homografi noedvendig (modsat
    #layer-screen, der skal foldes ud til en flad rude; overlayet er en fast del
    af fotoet). To ting tager det med: --veil (fotoet fader til sort som resten
-   af rummet) og --board-ink (tavlen toemmes mens programmet sendes til
-   skaermen). Uden JS staar begge paa "fuldt blaek". */
+   af rummet) og --board-ink (tavlen blegner — men bliver ikke tom — mens
+   programmet sendes til skaermen). Uden JS staar begge paa "fuldt blaek". */
 html.hero-on .hero-scene__board { opacity: calc((1 - var(--veil, 0)) * var(--board-ink, 1)); }
 html.hero-on .hero-scene__screen {
   position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; display: block;

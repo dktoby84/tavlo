@@ -77,8 +77,8 @@ screenshots/    git-ignoreret, kun til verifikation
 ## Hero-sekvensen
 Scroll-drevet sekvens i seks etaper (sal i hvile → telefon løftes → programmet
 flyver fra whiteboardet til skærmen → dashboard fader ind → telefon sænkes og
-kameraet zoomer ind → landing). Ét fremdriftstal (`p`, glidet af `frame()`'s inerti mod
-`trackProgress()`) styrer alt — CSS-variablerne og hjælpefunktionerne hedder:
+kameraet zoomer ind → landing). Ét fremdriftstal (`p`, glidet af `frame()`'s
+inerti mod `trackProgress()`) styrer alt — CSS-variablerne og hjælpefunktionerne hedder:
 
 1. **Hvile** — tv sort, `#hero-copy` (overskrift + CTA) synlig.
 2. **Telefonen løftes** (`#layer-hand`, `hand.webp`) — styret af `phoneUp`.
@@ -87,11 +87,12 @@ kameraet zoomer ind → landing). Ét fremdriftstal (`p`, glidet af `frame()`'s 
 3. **Send-buen** (`updateSendArc`, drevet af `sendDraw`/`sendEnvelope`/
    `sendFlash`/`sendPulse`) går fra **tavlen** til tv'et — ikke fra telefonen.
    Bogstaver (`.hero-send__glyph`, forskudt af `GLYPH_GAP`) letter fra tavlen
-   og flyver ind i skærmen, mens whiteboardet tømmes (`boardInk`): det
-   håndskrevne program forlader tavlen og er væk, før dashboardet står på
-   tv'et. Bagefter fader `#hero-note` ind (`note`) — den ene linje der siger
-   hvorfor: man slipper for at skrive tavlen om til hvert program i løbet af
-   dagen.
+   og flyver ind i skærmen, mens tavlen **blegner** (`boardInk` ned til
+   `BOARD_INK_LEFT`, ikke til nul): skriften bliver stående, svagere, så det
+   læses som "en kopi er på skærmen nu". En helt tom tavle ville sige at man
+   skal smide den ud, og skærmen er et supplement. Bagefter fader
+   `#hero-note` ind (`note`) — den ene linje der siger hvorfor: man slipper
+   for at skrive tavlen om til hvert program i løbet af dagen.
    Noten placeres af `placeNote()` ud fra hvor tavlen og tv'et FAKTISK ligger
    på skærmen (til højre for tavlen, under tv'et); faste procenter rammer kun
    én skærmbredde.
