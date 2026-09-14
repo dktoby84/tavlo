@@ -4,7 +4,7 @@
 
 // Opdatér ved hver aendring i dette script — vises i ?debug-boksen, saa man
 // kan se om browseren har den seneste version (cache, deploy).
-const BUILD = '2026-09-14T10:10Z';
+const BUILD = '2026-09-14T11:50Z';
 
 // Titlen staar ÉT sted og bruges baade af dashboardet og patchen over "WOD"
 // i hand.webp, saa de aldrig kan komme til at vise to forskellige ting.
@@ -106,15 +106,30 @@ const TV = [[600, 82], [970, 198], [965, 452], [595, 408]];
 const TV_CX = TV.reduce((s, p) => s + p[0], 0) / 4;
 const TV_CY = TV.reduce((s, p) => s + p[1], 0) / 4;
 
-// Whiteboardets midte i samme pixelrum (tavlens fire hjoerner selv staar i
-// markuppen, se .hero-scene__board). Det BREDE billede sigter mellem tavlen og
-// tv'et, saa man kan se begge dele — ogsaa naar fotoet er beskaaret paa en
-// 390 px skaerm. Uden det ligger tavlen halvt uden for kanten, og pointen
-// (program forlader tavlen, lander paa skaermen) kan ikke ses paa mobil.
-const BOARD_CX = 611;
-const BOARD_CY = 652;
-const WIDE_CX = (BOARD_CX + TV_CX) / 2;
-const WIDE_CY = (BOARD_CY + TV_CY) / 2;
+// Whiteboardets fire hjoerner i samme pixelrum — SAMME tal som markuppen
+// bruger til det haandskrevne program (.hero-scene__board). De skal ogsaa
+// bruges her, fordi send-buen starter paa tavlen og det brede billede sigter
+// efter den. Regn midten UD af hjoernerne; skriv den ikke af i haanden.
+const BOARD = [[381.8, 505.7], [536.8, 521.9], [540.4, 787.5], [386.6, 793.2]];
+const BOARD_CX = BOARD.reduce((s, p) => s + p[0], 0) / 4;
+const BOARD_CY = BOARD.reduce((s, p) => s + p[1], 0) / 4;
+const BOARD_RIGHT = Math.max(...BOARD.map((p) => p[0]));
+const TV_BOTTOM = Math.max(...TV.map((p) => p[1]));
+
+// Det BREDE billede centrerer PARRET tavle+tv (bounding box af de to
+// firkanter), saa begge er med — ogsaa naar fotoet er beskaaret paa en 390 px
+// skaerm. Uden det ligger tavlen halvt uden for kanten, og pointen (programmet
+// forlader tavlen og lander paa skaermen) kan ikke ses paa mobil. Ved fuld
+// zoom glider sigtepunktet over paa tv'ets midte alene.
+const WIDE_CX = (Math.min(...BOARD.map((p) => p[0])) + Math.max(...TV.map((p) => p[0]))) / 2;
+const WIDE_CY = (Math.min(...TV.map((p) => p[1])) + Math.max(...BOARD.map((p) => p[1]))) / 2;
+
+// Bogstavernes indbyrdes forskydning i send-buen: hvert bogstav faar sit eget
+// vindue af sendDraw, saa de letter fra tavlen ét ad gangen i stedet for samlet.
+const GLYPH_GAP = 0.08;
+// Luft mellem tavle/tv og noten naar den placeres (se placeNote).
+const NOTE_GAP_PX = 16;
+const NOTE_MAX_PX = 460;
 
 const scene = document.querySelector('[data-hero-scene]');
 const screenEl = document.getElementById('layer-screen');
@@ -122,7 +137,8 @@ const stage = scene && scene.closest('[data-hero-stage]');
 const track = scene && scene.closest('[data-hero-track]');
 const copyEl = document.getElementById('hero-copy');
 const sendPath = document.querySelector('[data-send-path]');
-const sendDot = document.querySelector('[data-send-dot]');
+const sendGlyphs = [...document.querySelectorAll('[data-send-glyph]')];
+const noteEl = document.getElementById('hero-note');
 const sendGrad = document.querySelector('[data-send-grad]');
 const phoneGlow = document.querySelector('[data-phone-glow]');
 
@@ -207,11 +223,12 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
   //   0.00..0.05 : 1 hvile — tv sort, headline+CTA synlig
   //   0.05..0.22 : 2 telefonen stiger op (hand.webp)
   //   0.05..0.095: 3 headline+CTA forsvinder helt (samtidig med 2, faerdig foer haandens boks naar teksten ved ~0.11)
-  //   0.22..0.27 : B1 send-buen tegnes telefon -> tv, glød paa telefonskaermen
-  //   0.23..0.33 : B1b whiteboardet toemmes (boardInk) — programmet forlader tavlen
-  //   0.27..0.285: B2 buens punkt naar tv'et, kort kant-glød
-  //   0.285..0.30: B3 buen fader ud
-  //   0.30..0.48 : 4 dashboard fader ind paa tv'et (ingen zoom, telefon stadig i billedet)
+  //   0.22..0.34 : B1 send-buen tegnes TAVLE -> tv; bogstaverne letter fra tavlen
+  //                (GLYPH_GAP forskyder dem, saa flere er i luften ad gangen)
+  //   0.23..0.35 : B1b whiteboardet toemmes (boardInk) — tomt naar bogstaverne lander
+  //   0.34..0.355: B2 bogstaverne naar tv'et, kort kant-glød
+  //   0.355..0.37: B3 buen fader ud
+  //   0.34..0.50 : 4 dashboard fader ind paa tv'et (ingen zoom, telefon stadig i billedet)
   //   0.52..0.60 : B1d noten fader ud igen
   //   0.62..0.80 : 5a telefonen saenkes ud
   //   0.80..0.88 : 5b kameraet zoomer ind mod tv'et (restScale -> zoomMax)
@@ -303,12 +320,12 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
   // tv-enden regnes gennem den SAMME scene-transform (g.tx/g.ty/g.s) som
   // dashboardet selv bruger. Ingen egen timer -> tilbage-scroll er gratis.
   function updateSendArc(sendDraw, active, g) {
-    if (!sendPath || !phoneGlow) return;
+    if (!sendPath) return;
     if (!active) return;
-    const stageRect = stage.getBoundingClientRect();
-    const pr = phoneGlow.getBoundingClientRect();
-    const x1 = pr.left + pr.width / 2 - stageRect.left;
-    const y1 = pr.top - stageRect.top;
+    // Begge ender regnes gennem den SAMME scene-transform som dashboardet
+    // bruger, saa buen sidder fast paa rummet uanset zoom og beskaering.
+    const x1 = g.tx + BOARD_CX * g.s;
+    const y1 = g.ty + BOARD_CY * g.s;
     const x2 = g.tx + TV_CX * g.s;
     const y2 = g.ty + TV_CY * g.s;
     const dx = x2 - x1;
@@ -316,7 +333,7 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
     const cx = (x1 + x2) / 2;
     const cy = Math.min(y1, y2) - bow;
     sendPath.setAttribute('d', `M ${x1.toFixed(1)},${y1.toFixed(1)} Q ${cx.toFixed(1)},${cy.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`);
-    // farveforloebet skal altid gaa orange (telefon) -> viola (tv), uanset
+    // farveforloebet skal altid gaa orange (tavlen) -> viola (tv), uanset
     // hvor de to punkter ligger paa skaermen -> gradienten faar path'ens egne
     // endepunkter i stedet for at laene sig op ad boundingbox'ens venstre/hoejre.
     if (sendGrad) {
@@ -326,9 +343,34 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
     const len = sendPath.getTotalLength();
     sendPath.style.strokeDasharray = len.toFixed(1);
     sendPath.style.strokeDashoffset = (len * (1 - clamp01(sendDraw))).toFixed(1);
-    const pt = sendPath.getPointAtLength(len * clamp01(sendDraw));
-    sendDot.setAttribute('cx', pt.x.toFixed(1));
-    sendDot.setAttribute('cy', pt.y.toFixed(1));
+
+    // Bogstaverne: hvert faar sit eget vindue af sendDraw (GLYPH_GAP), saa de
+    // letter fra tavlen ét ad gangen og danner en stroem. De fader ind lige
+    // efter starten og ud igen naar de rammer tv'et, saa de gaar IND i
+    // dashboardet i stedet for at stoppe brat paa kanten.
+    const d = clamp01(sendDraw);
+    const span = 1 - GLYPH_GAP * Math.max(0, sendGlyphs.length - 1);
+    sendGlyphs.forEach((el, i) => {
+      const u = clamp01((d - GLYPH_GAP * i) / span);
+      const pt = sendPath.getPointAtLength(len * u);
+      const fade = Math.min(local(u, 0, 0.18), 1 - local(u, 0.82, 1));
+      el.setAttribute('x', pt.x.toFixed(1));
+      el.setAttribute('y', pt.y.toFixed(1));
+      el.setAttribute('opacity', clamp01(fade).toFixed(3));
+    });
+  }
+
+  // Noten staar i det frie felt: til hoejre for tavlen, under tv'et. De to
+  // ligger vidt forskellige steder paa skaermen alt efter bredde (paa 1920
+  // ses hele fotoet, paa 390 er det beskaaret), saa placeringen regnes ud af
+  // hvor de FAKTISK ligger — faste procenter rammer kun én bredde.
+  function placeNote(g) {
+    if (!noteEl) return;
+    const vw = document.documentElement.clientWidth;
+    const left = Math.round(g.tx + BOARD_RIGHT * g.s) + NOTE_GAP_PX;
+    noteEl.style.left = left + 'px';
+    noteEl.style.top = (Math.round(g.ty + TV_BOTTOM * g.s) + NOTE_GAP_PX) + 'px';
+    noteEl.style.width = Math.max(0, Math.min(vw - left - NOTE_GAP_PX, NOTE_MAX_PX)) + 'px';
   }
 
   // ?at=0.3 laaser sekvensen paa en fast vaerdi (til verifikation uden scroll).
@@ -350,27 +392,27 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
     // etaper (p-intervaller — se kommentaren ovenfor):
     const phoneUp = easeInOutCubic(local(p, 0.05, 0.22));
     const phoneDown = easeInOutCubic(local(p, 0.62, 0.80));
-    const tvOn = local(p, 0.30, 0.48);
+    const tvOn = local(p, 0.34, 0.50);
     const pZoom = local(p, 0.80, 0.88);
     const veil = local(p, 0.80, 0.875);
     const pDetach = local(p, 0.88, 0.965);      // foerst naar fotoet er HELT sort (veil = 1 ved 0.875) — se kommentar ovenfor
     const copyDim = local(p, 0.05, 0.095);         // én vej: forsvinder, kommer ikke tilbage — faerdig foer haandens boks naar teksten (~0.11)
 
     // send-buen: draw 0.22-0.27, kort ankomst-flash 0.27-0.285, fade ud 0.285-0.30
-    const sendDraw = easeInOutCubic(local(p, 0.22, 0.27));
-    const sendEnvelope = clamp01(Math.min(local(p, 0.22, 0.235), 1 - local(p, 0.285, 0.30)));
-    const sendFlash = clamp01(1 - local(p, 0.27, 0.285)) * clamp01(local(p, 0.265, 0.27));
-    const sendPulse = sendEnvelope * (0.5 + 0.5 * Math.sin((p - 0.22) * Math.PI * 2 * (3 / 0.08))) * 0.65;
-    const sendActive = p > 0.205 && p < 0.31;
+    const sendDraw = easeInOutCubic(local(p, 0.22, 0.34));
+    const sendEnvelope = clamp01(Math.min(local(p, 0.22, 0.235), 1 - local(p, 0.355, 0.37)));
+    const sendFlash = clamp01(1 - local(p, 0.34, 0.355)) * clamp01(local(p, 0.335, 0.34));
+    const sendPulse = sendEnvelope * (0.5 + 0.5 * Math.sin((p - 0.22) * Math.PI * 2 * (3 / 0.15))) * 0.65;
+    const sendActive = p > 0.205 && p < 0.38;
 
     // Tavlen toemmes mens buen er undervejs: programmet forlader whiteboardet
     // og er vaek foer dashboardet staar helt paa tv'et (tvOn 0.30-0.45). Ren
     // p-styret som resten, saa den skriver sig selv tilbage ved tilbage-scroll.
-    const boardInk = 1 - local(p, 0.23, 0.33);
+    const boardInk = 1 - local(p, 0.23, 0.35);
 
     // Noten: fader ind mens buen er undervejs og tavlen toemmes, holder mens
     // dashboardet kommer paa tv'et, og er vaek foer telefonen saenkes (0.52).
-    const note = clamp01(Math.min(local(p, 0.24, 0.30), 1 - local(p, 0.52, 0.60)));
+    const note = clamp01(Math.min(local(p, 0.38, 0.44), 1 - local(p, 0.52, 0.60)));
 
     stage.style.setProperty('--phone-up', phoneUp.toFixed(4));
     stage.style.setProperty('--phone-down', phoneDown.toFixed(4));
@@ -384,6 +426,7 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
     stage.style.setProperty('--note', note.toFixed(4));
     if (copyEl) copyEl.classList.toggle('copy-hidden', copyDim >= 1);
     const g = layoutScene(pZoom, pDetach);
+    placeNote(g);
     updateSendArc(sendDraw, sendActive, g);
 
     if (dbg) {

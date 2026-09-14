@@ -295,26 +295,18 @@ html.hero-on .hero-seq__copy {
 html.hero-on .hero-seq__copy.copy-hidden { pointer-events: none; }
 
 /* --- Noten hen over overfoerslen ---
-   Sidder i det frie felt mellem tv'ets underkant og telefonens overkant (maalt
-   ved 390 og 1920: ca. 31-41 % af stagens hoejde begge steder). Egen moerk
-   plade bag teksten, fordi den ellers staar paa lys kryds-finér — kontrasten
-   kan ikke garanteres mod fotoet. --note styres af js/main.js. */
+   left/top/width saettes af js/main.js (placeNote): til hoejre for tavlen,
+   under tv'et. De to ligger vidt forskellige steder alt efter skaermbredde,
+   saa faste procenter rammer kun én bredde. Egen moerk plade bag teksten,
+   fordi den ellers staar paa lys kryds-finér — kontrasten kan ikke garanteres
+   mod fotoet. --note styrer opaciteten. */
 html.hero-on .hero-seq__note {
-  position: absolute; top: 33%; left: 50%; transform: translateX(-50%);
-  width: min(32ch, 62%); max-width: none; z-index: 5;
+  position: absolute; max-width: none; z-index: 5;
   margin: 0; padding: 0.7rem 0.95rem;
   background: rgba(11, 10, 13, 0.82); backdrop-filter: blur(8px);
   border: 1px solid var(--line); border-radius: 12px;
   font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.1rem); line-height: 1.35;
   opacity: var(--note, 0); pointer-events: none;
-}
-@media (max-width: 640px) {
-  /* Tavlen ligger i venstre side her — noten rykker til hoejre for den, saa
-     den hverken daekker tavlen eller tv'et. */
-  html.hero-on .hero-seq__note {
-    top: 31%; left: auto; right: 4%; transform: none;
-    width: min(22ch, 62%); text-align: right;
-  }
 }
 html.hero-on .hero-seq:focus-within .hero-seq__copy,
 .hero-seq:focus-within .hero-seq__copy { opacity: 1; pointer-events: auto; }
@@ -472,7 +464,7 @@ html.hero-on .hero-seq:focus-within .hero-seq__copy,
   opacity: var(--send-glow, 0);
 }
 
-/* -- send-buen: telefon -> tv. Ren p-drevet, ingen egen timer, saa tilbage-
+/* -- send-buen: TAVLE -> tv. Ren p-drevet, ingen egen timer, saa tilbage-
    scroll bare koerer den samme kurve baglaens. Skjult uden hero-on/JS. -- */
 .hero-send { display: none; }
 html.hero-on .hero-send {
@@ -481,7 +473,17 @@ html.hero-on .hero-send {
   opacity: var(--send-opacity, 0);
 }
 .hero-send__path { fill: none; stroke: url(#send-grad); stroke-width: 3; stroke-linecap: round; filter: url(#send-glow); }
-.hero-send__dot { fill: #fff; filter: url(#send-glow); }
+/* Bogstaverne der flyver fra tavlen til skaermen: samme haandskrift som paa
+   tavlen. LYSE, ikke gradient-farvede — de flyver hen over lys kryds-finér og
+   moerkt gulv, og send-gradientens viola forsvinder begge steder. Gloeden
+   goer dem laesbare uanset hvad de passerer. Position og opacitet saettes pr.
+   frame af js/main.js. */
+.hero-send__glyph {
+  font-family: "Kalam", cursive; font-weight: 700; font-size: 30px;
+  fill: #fff; text-anchor: middle; dominant-baseline: middle;
+  filter: url(#send-glow);
+}
+@media (max-width: 640px) { .hero-send__glyph { font-size: 18px; } }
 html.hero-on .hero-scene__screen {
   box-shadow: 0 0 calc(var(--send-flash, 0) * 70px) calc(var(--send-flash, 0) * 12px) rgba(202, 100, 220, calc(var(--send-flash, 0) * 0.9));
 }

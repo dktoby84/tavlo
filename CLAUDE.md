@@ -60,9 +60,9 @@ screenshots/    git-ignoreret, kun til verifikation
 ```
 
 ## Hero-sekvensen
-Scroll-drevet sekvens i seks etaper (sal i hvile → telefon løftes og sender til
-skærmen → dashboard fader ind → telefon sænkes og kameraet zoomer ind →
-landing). Ét fremdriftstal (`p`, glidet af `frame()`'s inerti mod
+Scroll-drevet sekvens i seks etaper (sal i hvile → telefon løftes → programmet
+flyver fra whiteboardet til skærmen → dashboard fader ind → telefon sænkes og
+kameraet zoomer ind → landing). Ét fremdriftstal (`p`, glidet af `frame()`'s inerti mod
 `trackProgress()`) styrer alt — CSS-variablerne og hjælpefunktionerne hedder:
 
 1. **Hvile** — tv sort, `#hero-copy` (overskrift + CTA) synlig.
@@ -70,12 +70,15 @@ landing). Ét fremdriftstal (`p`, glidet af `frame()`'s inerti mod
    Samtidig forsvinder `#hero-copy` (`copyDim`), altid færdig før telefonen
    når teksten.
 3. **Send-buen** (`updateSendArc`, drevet af `sendDraw`/`sendEnvelope`/
-   `sendFlash`/`sendPulse`) tegner fra telefonskærmen til tv'et. Undervejs
-   tømmes whiteboardet i fotoet (`boardInk`): det håndskrevne program forlader
-   tavlen og er væk, før dashboardet står på tv'et. Samtidig fader `#hero-note`
-   ind (`note`) i det frie felt mellem tv'ets underkant og telefonens overkant
-   — den ene linje der siger hvorfor: programmet skiftes fra mobilen, også
-   når man ikke er i salen.
+   `sendFlash`/`sendPulse`) går fra **tavlen** til tv'et — ikke fra telefonen.
+   Bogstaver (`.hero-send__glyph`, forskudt af `GLYPH_GAP`) letter fra tavlen
+   og flyver ind i skærmen, mens whiteboardet tømmes (`boardInk`): det
+   håndskrevne program forlader tavlen og er væk, før dashboardet står på
+   tv'et. Bagefter fader `#hero-note` ind (`note`) — den ene linje der siger
+   hvorfor: programmet skiftes fra mobilen, også når man ikke er i salen.
+   Noten placeres af `placeNote()` ud fra hvor tavlen og tv'et FAKTISK ligger
+   på skærmen (til højre for tavlen, under tv'et); faste procenter rammer kun
+   én skærmbredde.
 4. **Dashboardet** (`#layer-screen`) fader ind på tv'et (`tvOn`) — ingen zoom
    endnu.
 5. **Telefonen sænkes** (`phoneDown`), kameraet zoomer ind mod tv'et
