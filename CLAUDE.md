@@ -19,9 +19,10 @@ whiteboardet, ikke en erstatning** — oven i programmet viser den billeder,
 events, timer og beskeder, som tavlen ikke kan. Skriv derfor ikke copy der
 beder folk smide tavlen ud.
 
-Bemærk: sitet fører i dag **kun** foto-vejen frem (hero-sekvensen,
-`Ét foto fra telefonen`, trin-listen i `#tavle`). Admin-panelet nævnes ingen
-steder. Skal det med, er det en tekstændring på begge sprog.
+Bemærk: hero-sekvensen og trin-listen i `#tavle` fører stadig kun foto-vejen
+frem; admin-panelet nævnes ingen steder. `#features`-leaden handler nu om at
+gemme og genbruge WODs og vælge fra telefonen. Skal admin-panelet nævnes
+eksplicit, er det en tekstændring på begge sprog.
 
 ## Hårde krav (gælder alle sessioner)
 - **Statisk site:** vanilla HTML/CSS/JS. Ingen build-step, intet framework.
