@@ -175,10 +175,14 @@ a { color: var(--orange); }
   background: linear-gradient(160deg, var(--bg-3), var(--bg));
 }
 .hero-phone__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-.hero-scene__screen { order: 3; text-align: center; }
+.hero-seq__note {
+  order: 3; margin: 0; text-align: center; max-width: 34ch; margin-inline: auto;
+  padding-inline: 1.25rem; color: var(--ink); font-weight: 600;
+}
+.hero-scene__screen { order: 4; text-align: center; }
 .hero-scene__screen .dash { margin-inline: auto; width: min(1040px, 92vw); }
 .hero-seq__copy {
-  order: 4; display: grid; justify-items: center; gap: 1rem; text-align: center;
+  order: 5; display: grid; justify-items: center; gap: 1rem; text-align: center;
   padding-inline: clamp(1.25rem, 5vw, 2.5rem);
 }
 .hero-seq__copy h1 { max-width: 16ch; }
@@ -289,6 +293,29 @@ html.hero-on .hero-seq__copy {
   opacity: calc(1 - var(--copy-dim, 0));
 }
 html.hero-on .hero-seq__copy.copy-hidden { pointer-events: none; }
+
+/* --- Noten hen over overfoerslen ---
+   Sidder i det frie felt mellem tv'ets underkant og telefonens overkant (maalt
+   ved 390 og 1920: ca. 31-41 % af stagens hoejde begge steder). Egen moerk
+   plade bag teksten, fordi den ellers staar paa lys kryds-finér — kontrasten
+   kan ikke garanteres mod fotoet. --note styres af js/main.js. */
+html.hero-on .hero-seq__note {
+  position: absolute; top: 33%; left: 50%; transform: translateX(-50%);
+  width: min(32ch, 62%); max-width: none; z-index: 5;
+  margin: 0; padding: 0.7rem 0.95rem;
+  background: rgba(11, 10, 13, 0.82); backdrop-filter: blur(8px);
+  border: 1px solid var(--line); border-radius: 12px;
+  font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.1rem); line-height: 1.35;
+  opacity: var(--note, 0); pointer-events: none;
+}
+@media (max-width: 640px) {
+  /* Tavlen ligger i venstre side her — noten rykker til hoejre for den, saa
+     den hverken daekker tavlen eller tv'et. */
+  html.hero-on .hero-seq__note {
+    top: 31%; left: auto; right: 4%; transform: none;
+    width: min(22ch, 62%); text-align: right;
+  }
+}
 html.hero-on .hero-seq:focus-within .hero-seq__copy,
 .hero-seq:focus-within .hero-seq__copy { opacity: 1; pointer-events: auto; }
 

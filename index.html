@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tavlo — dagens program på storskærmen, styret fra lommen</title>
-  <meta name="description" content="Tavlo viser dagens program på storskærmen i salen — interval-timer, beskeder, events og billeder. Fotografér tavlen, så står den på skærmen. Styret fra telefonen på under et minut.">
+  <meta name="description" content="Tavlo viser dagens program på storskærmen i salen — interval-timer, beskeder, events og billeder. Skriv tavlen som du plejer. Tavlo læser den og sætter programmet op på skærmen. Styret fra telefonen på under et minut.">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#0B0A0D">
   <!-- Fjernes ved lancering — sitet er ikke offentligt annonceret endnu. -->
@@ -175,6 +175,12 @@
             <p class="hero-layer__cap">2 — Telefonen med Tavlo.</p>
           </div>
 
+          <!-- Én linje hen over selve overfoerslen: pointen med det hele. I
+               fald-tilbagen staar den som almindelig tekst mellem telefonen og
+               skaermen; med hero-on krydsfader den ind i det frie felt under
+               tv'et og til hoejre for tavlen (se --note i js/main.js). -->
+          <p class="hero-seq__note" id="hero-note">Ingen indtastning. Tavlen bliver læst automatisk.</p>
+
           <!-- SEND-BUE: telefon -> tv, mellem etape 2/3 og 4. Ren p-styret via JS
                (path/dashoffset/dot), ingen egen animation-timer — koerer derfor
                korrekt baglaens ved tilbage-scroll. Skjult uden hero-on. -->
@@ -198,7 +204,7 @@
           <!-- Del A: overskrift + CTA — synlig oven paa rummet fra start. -->
           <div class="hero-seq__copy" id="hero-copy">
             <h1>Tavlen på væggen. Styret fra lommen.</h1>
-            <p class="lead">Fotografér tavlen. Så står den på skærmen.</p>
+            <p class="lead">Skriv som du plejer. Tavlo sætter programmet op på skærmen.</p>
             <a class="btn btn-primary" href="#demo">Book en demo</a>
           </div>
 

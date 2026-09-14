@@ -38,10 +38,15 @@ Positionering: **supplement til centrets booking-app, ikke erstatning.**
 - Tal og timer: JetBrains Mono. Headline-font: vælges med UI UX Pro Max.
 
 ## Godkendte sætninger
-- "Fotografér tavlen. Så står den på skærmen."
 - "Tavlen på væggen. Styret fra lommen."
 - "Skriv som du plejer. Tavlo sætter det op."
+- "Skriv som du plejer. Tavlo sætter programmet op på skærmen." (hero-lead)
 - "Dagens program. Hele salen. Under et minut."
+- "Ingen indtastning. Tavlen bliver læst automatisk." (noten i hero-sekvensen)
+
+**Udgået:** "Fotografér tavlen. Så står den på skærmen." — "den" lød som om
+det var selve tavlen (et foto af den) der kom på skærmen, ikke programmet sat
+op. Genindfør den ikke.
 
 ## Struktur
 ```
@@ -67,7 +72,9 @@ landing). Ét fremdriftstal (`p`, glidet af `frame()`'s inerti mod
 3. **Send-buen** (`updateSendArc`, drevet af `sendDraw`/`sendEnvelope`/
    `sendFlash`/`sendPulse`) tegner fra telefonskærmen til tv'et. Undervejs
    tømmes whiteboardet i fotoet (`boardInk`): det håndskrevne program forlader
-   tavlen og er væk, før dashboardet står på tv'et.
+   tavlen og er væk, før dashboardet står på tv'et. Samtidig fader `#hero-note`
+   ind (`note`) i det frie felt mellem tv'ets underkant og telefonens overkant
+   — den ene linje der siger hvorfor: intet skal tastes ind.
 4. **Dashboardet** (`#layer-screen`) fader ind på tv'et (`tvOn`) — ingen zoom
    endnu.
 5. **Telefonen sænkes** (`phoneDown`), kameraet zoomer ind mod tv'et
@@ -83,6 +90,11 @@ landing). Ét fremdriftstal (`p`, glidet af `frame()`'s inerti mod
 Øvrige byggeklodser:
 - Homografien (`matrix3dFromQuad`, `TV`/`TV_CX`/`TV_CY`, `PHOTO_W`/`PHOTO_H`)
   mapper dashboardets flade til tv'ets fire hjørner i `room.jpg`.
+- Kameraets sigtepunkt (`WIDE_CX`/`WIDE_CY` → `TV_CX`/`TV_CY`, glidet af
+  `pZoom`): det brede billede sigter mellem tavlen og tv'et, så begge er med
+  på 390 px — ellers ligger tavlen halvt uden for kanten, og man kan ikke se
+  at programmet flytter fra tavlen til skærmen. Ved fuld zoom er sigtepunktet
+  præcis tv'ets midte, så slut-billedet er uændret.
 - `svhPx`/`lvhPx` (skjulte probes) og `stageOccupiedPx` holder styr på
   Safaris dynamiske værktøjslinje: baggrundslag dækker altid hele skærmen,
   mens det der skal kunne læses/nås holder sig inden for det garanterede

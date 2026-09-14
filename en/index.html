@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tavlo — today's programme on the big screen, run from your pocket</title>
-  <meta name="description" content="Tavlo shows today's programme on the big screen in the gym — interval timer, messages, events and photos. Snap the whiteboard, and it's on the screen. Run from your phone in under a minute.">
+  <meta name="description" content="Tavlo shows today's programme on the big screen in the gym — interval timer, messages, events and photos. Write the board like you always do. Tavlo reads it and lays the programme out on the screen. Run from your phone in under a minute.">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#0B0A0D">
   <!-- Fjernes ved lancering — sitet er ikke offentligt annonceret endnu. -->
@@ -177,6 +177,12 @@
             <p class="hero-layer__cap">2 — The phone with Tavlo.</p>
           </div>
 
+          <!-- Én linje hen over selve overfoerslen: pointen med det hele. I
+               fald-tilbagen staar den som almindelig tekst mellem telefonen og
+               skaermen; med hero-on krydsfader den ind i det frie felt under
+               tv'et og til hoejre for tavlen (se --note i js/main.js). -->
+          <p class="hero-seq__note" id="hero-note">No typing. The board is read automatically.</p>
+
           <!-- SEND-BUE: telefon -> tv, mellem etape 2/3 og 4. Ren p-styret via JS
                (path/dashoffset/dot), ingen egen animation-timer — koerer derfor
                korrekt baglaens ved tilbage-scroll. Skjult uden hero-on. -->
@@ -200,7 +206,7 @@
           <!-- Del A: overskrift + CTA — synlig oven paa rummet fra start. -->
           <div class="hero-seq__copy" id="hero-copy">
             <h1>The whiteboard on the wall. Run from your pocket.</h1>
-            <p class="lead">Snap the whiteboard. It's on the screen.</p>
+            <p class="lead">Write it like you always do. Tavlo lays the programme out on the screen.</p>
             <a class="btn btn-primary" href="#demo">Book a demo</a>
           </div>
 

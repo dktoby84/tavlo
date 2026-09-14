@@ -4,7 +4,7 @@
 
 // Opdatér ved hver aendring i dette script — vises i ?debug-boksen, saa man
 // kan se om browseren har den seneste version (cache, deploy).
-const BUILD = '2026-09-13T19:40Z';
+const BUILD = '2026-09-14T06:40Z';
 
 // Titlen staar ÉT sted og bruges baade af dashboardet og patchen over "WOD"
 // i hand.webp, saa de aldrig kan komme til at vise to forskellige ting.
@@ -105,6 +105,16 @@ const PHOTO_H = 1536;
 const TV = [[600, 82], [970, 198], [965, 452], [595, 408]];
 const TV_CX = TV.reduce((s, p) => s + p[0], 0) / 4;
 const TV_CY = TV.reduce((s, p) => s + p[1], 0) / 4;
+
+// Whiteboardets midte i samme pixelrum (tavlens fire hjoerner selv staar i
+// markuppen, se .hero-scene__board). Det BREDE billede sigter mellem tavlen og
+// tv'et, saa man kan se begge dele — ogsaa naar fotoet er beskaaret paa en
+// 390 px skaerm. Uden det ligger tavlen halvt uden for kanten, og pointen
+// (program forlader tavlen, lander paa skaermen) kan ikke ses paa mobil.
+const BOARD_CX = 611;
+const BOARD_CY = 652;
+const WIDE_CX = (BOARD_CX + TV_CX) / 2;
+const WIDE_CY = (BOARD_CY + TV_CY) / 2;
 
 const scene = document.querySelector('[data-hero-scene]');
 const screenEl = document.getElementById('layer-screen');
@@ -229,9 +239,14 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
     const s = restScale + Math.max(0, zoomMax - restScale) * ez;
     const sW = PHOTO_W * s, sH = PHOTO_H * s;
 
-    // Centrer paa tv'et, clamp saa fotoets kant aldrig kommer ind i viewporten.
-    let tx = vw / 2 - TV_CX * s;
-    let ty = vh / 2 - TV_CY * s;
+    // Sigtepunkt: bredt billede mellem tavlen og tv'et (begge synlige), som
+    // glider over paa tv'et alene i takt med at kameraet zoomer ind (ez) — ved
+    // ez=1 er det praecis tv'ets midte, saa slut-zoomet er uaendret.
+    // Clamp bagefter, saa fotoets kant aldrig kommer ind i viewporten.
+    const fx = WIDE_CX + (TV_CX - WIDE_CX) * ez;
+    const fy = WIDE_CY + (TV_CY - WIDE_CY) * ez;
+    let tx = vw / 2 - fx * s;
+    let ty = vh / 2 - fy * s;
     tx = Math.min(0, Math.max(vw - sW, tx));
     ty = Math.min(0, Math.max(vh - sH, ty));
     scene.style.transform = `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) scale(${s.toFixed(6)})`;
@@ -348,6 +363,10 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
     // p-styret som resten, saa den skriver sig selv tilbage ved tilbage-scroll.
     const boardInk = 1 - local(p, 0.23, 0.33);
 
+    // Noten: fader ind mens buen er undervejs og tavlen toemmes, holder mens
+    // dashboardet kommer paa tv'et, og er vaek foer telefonen saenkes (0.52).
+    const note = clamp01(Math.min(local(p, 0.24, 0.30), 1 - local(p, 0.46, 0.52)));
+
     stage.style.setProperty('--phone-up', phoneUp.toFixed(4));
     stage.style.setProperty('--phone-down', phoneDown.toFixed(4));
     stage.style.setProperty('--tv-on', tvOn.toFixed(4));
@@ -357,6 +376,7 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
     stage.style.setProperty('--send-glow', sendPulse.toFixed(4));
     stage.style.setProperty('--send-flash', sendFlash.toFixed(4));
     stage.style.setProperty('--board-ink', boardInk.toFixed(4));
+    stage.style.setProperty('--note', note.toFixed(4));
     if (copyEl) copyEl.classList.toggle('copy-hidden', copyDim >= 1);
     const g = layoutScene(pZoom, pDetach);
     updateSendArc(sendDraw, sendActive, g);
@@ -386,7 +406,7 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
         `p ${p.toFixed(3)}  viewport ${document.documentElement.clientWidth}x${stage.clientHeight}  safeVh ${g.safeVh.toFixed(0)}  portrait ${g.portrait}\n` +
         `phoneUp ${phoneUp.toFixed(2)} phoneDown ${phoneDown.toFixed(2)} tvOn ${tvOn.toFixed(2)} veil ${veil.toFixed(2)} copyDim ${copyDim.toFixed(2)}\n` +
         `sendDraw ${sendDraw.toFixed(2)} sendOpacity ${sendEnvelope.toFixed(2)} sendFlash ${sendFlash.toFixed(2)} sendGlow ${sendPulse.toFixed(2)}\n` +
-        `boardInk ${boardInk.toFixed(2)}\n` +
+        `boardInk ${boardInk.toFixed(2)} note ${note.toFixed(2)}\n` +
         `pZoom ${pZoom.toFixed(2)} pDetach ${pDetach.toFixed(2)} restScale ${g.restScale.toFixed(4)} zoomMax ${g.zoomMax.toFixed(4)} scale ${g.s.toFixed(4)}\n` +
         `fotoOpacity ${(1 - veil).toFixed(2)}  header->dashboard ${hdrToDashPx.toFixed(0)}px  dashboard->overskrift ${Number.isFinite(gapPx) ? gapPx.toFixed(0) : '?'}px\n` +
         `tx ${g.tx.toFixed(0)} ty ${g.ty.toFixed(0)}  TV(natural) TL${TV[0]} TR${TV[1]} BR${TV[2]} BL${TV[3]}`;
