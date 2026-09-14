@@ -4,7 +4,7 @@
 
 // Opdatér ved hver aendring i dette script — vises i ?debug-boksen, saa man
 // kan se om browseren har den seneste version (cache, deploy).
-const BUILD = '2026-09-14T11:50Z';
+const BUILD = '2026-09-14T12:30Z';
 
 // Titlen staar ÉT sted og bruges baade af dashboardet og patchen over "WOD"
 // i hand.webp, saa de aldrig kan komme til at vise to forskellige ting.
@@ -220,17 +220,21 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
   }
 
   // Etaper efter --hp (0..1, glidet mod scroll-maalet). Se status-tabellen for navne.
-  //   0.00..0.05 : 1 hvile — tv sort, headline+CTA synlig
-  //   0.05..0.22 : 2 telefonen stiger op (hand.webp)
-  //   0.05..0.095: 3 headline+CTA forsvinder helt (samtidig med 2, faerdig foer haandens boks naar teksten ved ~0.11)
-  //   0.22..0.34 : B1 send-buen tegnes TAVLE -> tv; bogstaverne letter fra tavlen
-  //                (GLYPH_GAP forskyder dem, saa flere er i luften ad gangen)
-  //   0.23..0.35 : B1b whiteboardet toemmes (boardInk) — tomt naar bogstaverne lander
-  //   0.34..0.355: B2 bogstaverne naar tv'et, kort kant-glød
-  //   0.355..0.37: B3 buen fader ud
-  //   0.34..0.50 : 4 dashboard fader ind paa tv'et (ingen zoom, telefon stadig i billedet)
-  //   0.52..0.60 : B1d noten fader ud igen
-  //   0.62..0.80 : 5a telefonen saenkes ud
+  //   0.00..0.04 : 1 hvile — tv sort, headline+CTA synlig
+  //   0.04..0.19 : 2 telefonen stiger op (hand.webp)
+  //   0.04..0.085: 3 headline+CTA forsvinder helt (samtidig med 2, faerdig foer
+  //                haandens boks naar teksten)
+  //   0.20..0.44 : B1 send-buen tegnes TAVLE -> tv; bogstaverne letter fra tavlen
+  //                (GLYPH_GAP forskyder dem, saa flere er i luften ad gangen).
+  //                Vinduet er bevidst bredt — det er selve pointen man skal naa
+  //                at se, og ved det halve foeltes det som et glimt.
+  //   0.21..0.45 : B1b whiteboardet toemmes (boardInk) — tomt naar bogstaverne lander
+  //   0.44..0.455: B2 bogstaverne naar tv'et, kort kant-glød
+  //   0.455..0.47: B3 buen fader ud
+  //   0.44..0.58 : 4 dashboard fader ind paa tv'et (ingen zoom, telefon stadig i billedet)
+  //   0.50..0.56 : B1c noten fader ind (note) — foerst naar bogstaverne er landet
+  //   0.64..0.72 : B1d noten fader ud igen
+  //   0.66..0.80 : 5a telefonen saenkes ud
   //   0.80..0.88 : 5b kameraet zoomer ind mod tv'et (restScale -> zoomMax)
   //   0.80..0.875: 5b foto -> sort (veil). pDetach maa foerst starte naar fotoet er sort,
   //                for tv'ets skaeve firkant (ca. 1,3:1) naar den folder ud mod dashboardets
@@ -390,29 +394,29 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
 
     const p = shown;
     // etaper (p-intervaller — se kommentaren ovenfor):
-    const phoneUp = easeInOutCubic(local(p, 0.05, 0.22));
-    const phoneDown = easeInOutCubic(local(p, 0.62, 0.80));
-    const tvOn = local(p, 0.34, 0.50);
+    const phoneUp = easeInOutCubic(local(p, 0.04, 0.19));
+    const phoneDown = easeInOutCubic(local(p, 0.66, 0.80));
+    const tvOn = local(p, 0.44, 0.58);
     const pZoom = local(p, 0.80, 0.88);
     const veil = local(p, 0.80, 0.875);
     const pDetach = local(p, 0.88, 0.965);      // foerst naar fotoet er HELT sort (veil = 1 ved 0.875) — se kommentar ovenfor
-    const copyDim = local(p, 0.05, 0.095);         // én vej: forsvinder, kommer ikke tilbage — faerdig foer haandens boks naar teksten (~0.11)
+    const copyDim = local(p, 0.04, 0.085);         // én vej: forsvinder, kommer ikke tilbage — faerdig foer haandens boks naar teksten (~0.11)
 
     // send-buen: draw 0.22-0.27, kort ankomst-flash 0.27-0.285, fade ud 0.285-0.30
-    const sendDraw = easeInOutCubic(local(p, 0.22, 0.34));
-    const sendEnvelope = clamp01(Math.min(local(p, 0.22, 0.235), 1 - local(p, 0.355, 0.37)));
-    const sendFlash = clamp01(1 - local(p, 0.34, 0.355)) * clamp01(local(p, 0.335, 0.34));
-    const sendPulse = sendEnvelope * (0.5 + 0.5 * Math.sin((p - 0.22) * Math.PI * 2 * (3 / 0.15))) * 0.65;
-    const sendActive = p > 0.205 && p < 0.38;
+    const sendDraw = easeInOutCubic(local(p, 0.20, 0.44));
+    const sendEnvelope = clamp01(Math.min(local(p, 0.20, 0.225), 1 - local(p, 0.455, 0.47)));
+    const sendFlash = clamp01(1 - local(p, 0.44, 0.455)) * clamp01(local(p, 0.435, 0.44));
+    const sendPulse = sendEnvelope * (0.5 + 0.5 * Math.sin((p - 0.20) * Math.PI * 2 * (3 / 0.24))) * 0.65;
+    const sendActive = p > 0.185 && p < 0.48;
 
     // Tavlen toemmes mens buen er undervejs: programmet forlader whiteboardet
     // og er vaek foer dashboardet staar helt paa tv'et (tvOn 0.30-0.45). Ren
     // p-styret som resten, saa den skriver sig selv tilbage ved tilbage-scroll.
-    const boardInk = 1 - local(p, 0.23, 0.35);
+    const boardInk = 1 - local(p, 0.21, 0.45);
 
     // Noten: fader ind mens buen er undervejs og tavlen toemmes, holder mens
     // dashboardet kommer paa tv'et, og er vaek foer telefonen saenkes (0.52).
-    const note = clamp01(Math.min(local(p, 0.38, 0.44), 1 - local(p, 0.52, 0.60)));
+    const note = clamp01(Math.min(local(p, 0.50, 0.56), 1 - local(p, 0.64, 0.72)));
 
     stage.style.setProperty('--phone-up', phoneUp.toFixed(4));
     stage.style.setProperty('--phone-down', phoneDown.toFixed(4));

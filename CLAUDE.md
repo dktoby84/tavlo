@@ -42,7 +42,7 @@ Positionering: **supplement til centrets booking-app, ikke erstatning.**
 - "Skriv som du plejer. Tavlo sætter det op."
 - "Skriv som du plejer. Tavlo sætter programmet op på skærmen." (hero-lead)
 - "Dagens program. Hele salen. Under et minut."
-- "Skift programmet fra mobilen — også fra ferien." (noten i hero-sekvensen)
+- "Skift whiteboardet ud med en skærm alle kan læse." (noten i hero-sekvensen)
 
 **Udgået:** "Fotografér tavlen. Så står den på skærmen." — "den" lød som om
 det var selve tavlen (et foto af den) der kom på skærmen, ikke programmet sat
@@ -75,7 +75,8 @@ kameraet zoomer ind → landing). Ét fremdriftstal (`p`, glidet af `frame()`'s 
    og flyver ind i skærmen, mens whiteboardet tømmes (`boardInk`): det
    håndskrevne program forlader tavlen og er væk, før dashboardet står på
    tv'et. Bagefter fader `#hero-note` ind (`note`) — den ene linje der siger
-   hvorfor: programmet skiftes fra mobilen, også når man ikke er i salen.
+   hvorfor: tavlen på væggen bliver skiftet ud med en skærm der kan læses
+   hele vejen bagud i salen.
    Noten placeres af `placeNote()` ud fra hvor tavlen og tv'et FAKTISK ligger
    på skærmen (til højre for tavlen, under tv'et); faste procenter rammer kun
    én skærmbredde.
