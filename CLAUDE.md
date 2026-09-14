@@ -63,6 +63,9 @@ eksplicit, er det en tekstændring på begge sprog.
   selve tavlen (et foto af den) der kom på skærmen, ikke programmet sat op.
 - "Skift whiteboardet ud med en skærm alle kan læse." — skærmen er et
   supplement til tavlen, ikke en erstatning.
+- "Book en demo, så viser vi det på jeres egen skærm." — demoen vises på en
+  skærm der allerede kører (oplyst af ejeren, som har fået lov til det).
+  Lov ikke at sætte det op på kundens egen skærm. Navngiv aldrig centret.
 
 ## Struktur
 ```
