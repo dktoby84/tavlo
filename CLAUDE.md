@@ -11,10 +11,13 @@ Positionering: **supplement til centrets booking-app, ikke erstatning.**
 
 **To veje ind med et program** (oplyst af ejeren): man skriver det i
 admin-panelet som man plejer, ELLER fotograferer et whiteboard — fx en gammel
-WOD der allerede står på tavlen — og lader AI læse det. Når alle WODs ligger i
-databasen, er whiteboardet overflødigt. Derfor modsiger "Skriv som du plejer"
-og "Skift whiteboardet ud" ikke hinanden: man skriver stadig, bare ikke på
-tavlen. Rejs ikke den indvending igen.
+WOD der allerede står på tavlen — og lader AI læse det.
+
+**Kernen i værdien** (oplyst af ejeren): man slipper for at skrive tavlen om
+til hvert program i løbet af dagen. Skærmen er et **supplement til
+whiteboardet, ikke en erstatning** — oven i programmet viser den billeder,
+events, timer og beskeder, som tavlen ikke kan. Skriv derfor ikke copy der
+beder folk smide tavlen ud.
 
 Bemærk: sitet fører i dag **kun** foto-vejen frem (hero-sekvensen,
 `Ét foto fra telefonen`, trin-listen i `#tavle`). Admin-panelet nævnes ingen
@@ -52,11 +55,13 @@ steder. Skal det med, er det en tekstændring på begge sprog.
 - "Skriv som du plejer. Tavlo sætter det op."
 - "Skriv som du plejer. Tavlo sætter programmet op på skærmen." (hero-lead)
 - "Dagens program. Hele salen. Under et minut."
-- "Skift whiteboardet ud med en skærm alle kan læse." (noten i hero-sekvensen)
+- "Slip for at skrive tavlen om til hvert program i løbet af dagen." (noten)
 
-**Udgået:** "Fotografér tavlen. Så står den på skærmen." — "den" lød som om
-det var selve tavlen (et foto af den) der kom på skærmen, ikke programmet sat
-op. Genindfør den ikke.
+**Udgået** — genindfør dem ikke:
+- "Fotografér tavlen. Så står den på skærmen." — "den" lød som om det var
+  selve tavlen (et foto af den) der kom på skærmen, ikke programmet sat op.
+- "Skift whiteboardet ud med en skærm alle kan læse." — skærmen er et
+  supplement til tavlen, ikke en erstatning.
 
 ## Struktur
 ```
@@ -85,8 +90,8 @@ kameraet zoomer ind → landing). Ét fremdriftstal (`p`, glidet af `frame()`'s 
    og flyver ind i skærmen, mens whiteboardet tømmes (`boardInk`): det
    håndskrevne program forlader tavlen og er væk, før dashboardet står på
    tv'et. Bagefter fader `#hero-note` ind (`note`) — den ene linje der siger
-   hvorfor: tavlen på væggen bliver skiftet ud med en skærm der kan læses
-   hele vejen bagud i salen.
+   hvorfor: man slipper for at skrive tavlen om til hvert program i løbet af
+   dagen.
    Noten placeres af `placeNote()` ud fra hvor tavlen og tv'et FAKTISK ligger
    på skærmen (til højre for tavlen, under tv'et); faste procenter rammer kun
    én skærmbredde.
