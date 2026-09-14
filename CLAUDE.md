@@ -6,9 +6,19 @@ ikke produktets repo og må aldrig kobles til det.
 ## Hvad Tavlo er (kort)
 Kiosk-system til træningscentre. Storskærm i salen viser dagens program,
 interval-timer, beskeder, events og billeder. Ejeren styrer alt fra telefonen
-på under et minut. Vigtigste arbejdsgang: fotografér whiteboardet → AI læser
-det → det står på skærmen. Layoutmotor skalerer teksten til 1920×1080.
+på under et minut. Layoutmotor skalerer teksten til 1920×1080.
 Positionering: **supplement til centrets booking-app, ikke erstatning.**
+
+**To veje ind med et program** (oplyst af ejeren): man skriver det i
+admin-panelet som man plejer, ELLER fotograferer et whiteboard — fx en gammel
+WOD der allerede står på tavlen — og lader AI læse det. Når alle WODs ligger i
+databasen, er whiteboardet overflødigt. Derfor modsiger "Skriv som du plejer"
+og "Skift whiteboardet ud" ikke hinanden: man skriver stadig, bare ikke på
+tavlen. Rejs ikke den indvending igen.
+
+Bemærk: sitet fører i dag **kun** foto-vejen frem (hero-sekvensen,
+`Ét foto fra telefonen`, trin-listen i `#tavle`). Admin-panelet nævnes ingen
+steder. Skal det med, er det en tekstændring på begge sprog.
 
 ## Hårde krav (gælder alle sessioner)
 - **Statisk site:** vanilla HTML/CSS/JS. Ingen build-step, intet framework.
