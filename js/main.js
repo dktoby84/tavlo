@@ -4,7 +4,7 @@
 
 // Opdatér ved hver aendring i dette script — vises i ?debug-boksen, saa man
 // kan se om browseren har den seneste version (cache, deploy).
-const BUILD = '2026-09-14T06:40Z';
+const BUILD = '2026-09-14T10:10Z';
 
 // Titlen staar ÉT sted og bruges baade af dashboardet og patchen over "WOD"
 // i hand.webp, saa de aldrig kan komme til at vise to forskellige ting.
@@ -211,15 +211,20 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
   //   0.23..0.33 : B1b whiteboardet toemmes (boardInk) — programmet forlader tavlen
   //   0.27..0.285: B2 buens punkt naar tv'et, kort kant-glød
   //   0.285..0.30: B3 buen fader ud
-  //   0.30..0.45 : 4 dashboard fader ind paa tv'et (ingen zoom, telefon stadig i billedet)
-  //   0.45..0.52 : hold
-  //   0.52..0.64 : 5a telefonen saenkes ud
-  //   0.66..0.80 : 5b kameraet zoomer ind mod tv'et (restScale -> zoomMax)
-  //   0.68..0.83 : 5b foto -> sort (veil). pDetach maa foerst starte naar veil>=0.9 (p>=0.815)
+  //   0.30..0.48 : 4 dashboard fader ind paa tv'et (ingen zoom, telefon stadig i billedet)
+  //   0.52..0.60 : B1d noten fader ud igen
+  //   0.62..0.80 : 5a telefonen saenkes ud
+  //   0.80..0.88 : 5b kameraet zoomer ind mod tv'et (restScale -> zoomMax)
+  //   0.80..0.875: 5b foto -> sort (veil). pDetach maa foerst starte naar fotoet er sort,
   //                for tv'ets skaeve firkant (ca. 1,3:1) naar den folder ud mod dashboardets
   //                16:9 — den mellemform er kun praesentabel naar fotoet er sort.
-  //   0.85..0.975: 5c dashboard folder ud til fladt 16:9 (efter veil er sort med god margin)
-  //   0.975..1.00: 6 kort hold foer sticky slipper (~13% af en skaermhoejde paa 520svh-sporet)
+  //   0.88..0.965: 5c dashboard folder ud til fladt 16:9 (starter efter veil = 1 ved 0.875)
+  //   0.965..1.00: 6 kort hold foer sticky slipper
+  //
+  // HALEN (fra telefonen er ude til dashboardet er landet) er bevidst kort: den
+  // fyldte foer ~1,9 skaermhoejder paa mobil, hvilket foeltes som doedt scroll
+  // efter at pointen var leveret. Den er nu ~1 skaermhoejde. Flyttes graenserne
+  // her, saa hold oeje med det tal — mal det, gaet ikke.
 
   // pZoom: 0 = kigger paa rummet, 1 = hallen zoomet helt ind (restScale -> zoomMax).
   // pDetach: 0 = dashboardet limet paa tv'et, 1 = fladt 16:9-rektangel i viewporten.
@@ -344,11 +349,11 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
     const p = shown;
     // etaper (p-intervaller — se kommentaren ovenfor):
     const phoneUp = easeInOutCubic(local(p, 0.05, 0.22));
-    const phoneDown = easeInOutCubic(local(p, 0.52, 0.64));
-    const tvOn = local(p, 0.30, 0.45);
-    const pZoom = local(p, 0.66, 0.80);
-    const veil = local(p, 0.68, 0.83);
-    const pDetach = local(p, 0.85, 0.975);      // starter foerst naar veil naar 0.9 ved p~0.815 — se kommentar ovenfor
+    const phoneDown = easeInOutCubic(local(p, 0.62, 0.80));
+    const tvOn = local(p, 0.30, 0.48);
+    const pZoom = local(p, 0.80, 0.88);
+    const veil = local(p, 0.80, 0.875);
+    const pDetach = local(p, 0.88, 0.965);      // foerst naar fotoet er HELT sort (veil = 1 ved 0.875) — se kommentar ovenfor
     const copyDim = local(p, 0.05, 0.095);         // én vej: forsvinder, kommer ikke tilbage — faerdig foer haandens boks naar teksten (~0.11)
 
     // send-buen: draw 0.22-0.27, kort ankomst-flash 0.27-0.285, fade ud 0.285-0.30
@@ -365,7 +370,7 @@ if (scene && screenEl && stage && track && !matchMedia('(prefers-reduced-motion:
 
     // Noten: fader ind mens buen er undervejs og tavlen toemmes, holder mens
     // dashboardet kommer paa tv'et, og er vaek foer telefonen saenkes (0.52).
-    const note = clamp01(Math.min(local(p, 0.24, 0.30), 1 - local(p, 0.46, 0.52)));
+    const note = clamp01(Math.min(local(p, 0.24, 0.30), 1 - local(p, 0.52, 0.60)));
 
     stage.style.setProperty('--phone-up', phoneUp.toFixed(4));
     stage.style.setProperty('--phone-down', phoneDown.toFixed(4));

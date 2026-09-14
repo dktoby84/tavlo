@@ -42,7 +42,7 @@ Positionering: **supplement til centrets booking-app, ikke erstatning.**
 - "Skriv som du plejer. Tavlo sætter det op."
 - "Skriv som du plejer. Tavlo sætter programmet op på skærmen." (hero-lead)
 - "Dagens program. Hele salen. Under et minut."
-- "Ingen indtastning. Tavlen bliver læst automatisk." (noten i hero-sekvensen)
+- "Tavlen skal ikke skrives om flere gange om dagen." (noten i hero-sekvensen)
 
 **Udgået:** "Fotografér tavlen. Så står den på skærmen." — "den" lød som om
 det var selve tavlen (et foto af den) der kom på skærmen, ikke programmet sat
@@ -74,7 +74,8 @@ landing). Ét fremdriftstal (`p`, glidet af `frame()`'s inerti mod
    tømmes whiteboardet i fotoet (`boardInk`): det håndskrevne program forlader
    tavlen og er væk, før dashboardet står på tv'et. Samtidig fader `#hero-note`
    ind (`note`) i det frie felt mellem tv'ets underkant og telefonens overkant
-   — den ene linje der siger hvorfor: intet skal tastes ind.
+   — den ene linje der siger hvorfor: tavlen skal ikke skrives om flere gange
+   om dagen.
 4. **Dashboardet** (`#layer-screen`) fader ind på tv'et (`tvOn`) — ingen zoom
    endnu.
 5. **Telefonen sænkes** (`phoneDown`), kameraet zoomer ind mod tv'et
@@ -82,7 +83,10 @@ landing). Ét fremdriftstal (`p`, glidet af `frame()`'s inerti mod
    (`veil`), og dashboardet folder ud til en flad 16:9-flade (`pDetach`) —
    folder først ud når fotoet er helt sort, ellers ses tv-rammens skæve form
    bag det flade dashboard.
-6. **Landing** — kort hold, så slipper sticky til næste sektion. På
+6. **Landing** — kort hold, så slipper sticky til næste sektion. Halen fra
+   telefonen er ude til dashboardet er landet holdes kort (~1 skærmhøjde på
+   mobil): den fyldte før næsten to, og det føltes som dødt scroll efter at
+   pointen var leveret. Flyttes etape-grænserne, så mål det tal igen. På
    portræt-skærme krymper `layoutScene()` selve stage-boksens højde i denne
    fase (se `HEADER_GAP_PX`, `GAP_TARGET_PX`, `FEATURES_PAD_PX`), så
    dashboardet lander tæt under headeren uden dødt scroll bagefter.
